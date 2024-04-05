@@ -1,0 +1,15 @@
+- name: 'type: breaking'
+  description: New feature is created.
+  color: 66ff66
+- name: 'type: feature'
+  description: New feature is created.
+  color: D93F0B
+- name: 'type: improvement'
+  description: Minor improvement of a feature.
+  color: 8D7BE7
+- name: 'type: automation'
+  description: Continuous integration and deployment features and changes.
+  color: 20B2AA
+- name: 'type: documentation'
+  description: Improvements or additions to documentation.
+  color: 1BA1E2
