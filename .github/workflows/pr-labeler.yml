@@ -3,9 +3,6 @@ on:
   pull_request:
     types: [opened, synchronize]
 
-permissions:
-  contents: read
-
 jobs:
   pr-labeler:
     permissions:
