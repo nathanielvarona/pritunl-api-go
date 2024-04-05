@@ -5,13 +5,10 @@ on:
     branches:
       - main
 
-permissions:
-  contents: read
-
 jobs:
   update_release_draft:
     permissions:
-      contents: read
+      contents: write
       pull-requests: write
     runs-on: ubuntu-22.04
     steps:
