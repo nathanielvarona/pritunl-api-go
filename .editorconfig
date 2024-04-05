@@ -20,6 +20,11 @@ indent_size = 2
 indent_style = space
 indent_size = 2
 
+# YAML files
+[*.{md}]
+indent_style = space
+indent_size = 2
+
 # Set charset
 charset = utf-8
 
