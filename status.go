@@ -25,7 +25,7 @@ type Status struct {
 }
 
 // StatusGet retrieves the Pritunl server status
-func (c *Client) StatusGet(ctx context.Context) (*Status, error) {
+func (c *Client) Status(ctx context.Context) ([]Status, error) {
 	var data []byte
 
 	response, err := c.AuthRequest(ctx, http.MethodGet, "/status", data)
@@ -42,10 +42,16 @@ func (c *Client) StatusGet(ctx context.Context) (*Status, error) {
 	}
 
 	// Decode the read bytes
-	var status Status
+	var status []Status
 	if err := json.Unmarshal(bodyBytes, &status); err != nil {
-		return nil, fmt.Errorf("failed to decode status response: %w", err)
+		// Check for single user response (may not be wrapped in an array)
+		var singleStatus Status
+		if unmarshalErr := json.Unmarshal(bodyBytes, &singleStatus); unmarshalErr == nil {
+			status = append(status, singleStatus)
+		} else {
+			return nil, fmt.Errorf("failed to decode status response: %w", err)
+		}
 	}
 
-	return &status, nil
+	return status, nil
 }
