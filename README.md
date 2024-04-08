@@ -28,6 +28,7 @@ go get github.com/nathanielvarona/pritunl-api-go
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -36,34 +37,49 @@ import (
 )
 
 func main() {
-
-	client := pritunl.PritunlClient()
+	// Create a new Pritunl client instance
+	client, err := pritunl.NewClient()
 
 	// You can also initialize an instance by manually providing the arguments.
 	//
-	// client := pritunl.PritunlClient(&pritunl.Client{
+	// client := pritunl.NewClient(&pritunl.Client{
 	// 	BaseUrl:   "<PRITUNL API URL>",
 	// 	ApiToken:  "<PRITUNL API TOKEN>",
 	// 	ApiSecret: "<PRITUNL API SECRET>",
 	// })
 
-	resp, err := client.StatusGet()
-
 	if err != nil {
-		log.Fatalf("Error performing status request: %v", err)
+		log.Fatal(err)
 	}
 
-	defer resp.Body.Close()
+	// Create a context for the request
+	ctx := context.Background()
 
-	var responseBody map[string]interface{}
-	err = json.NewDecoder(resp.Body).Decode(&responseBody)
+	// Retrieve the server status
+	status, err := client.StatusGet(ctx)
 	if err != nil {
-		log.Fatalf("Error decoding response body: %v", err)
+		log.Fatal(err)
 	}
 
-	fmt.Println(responseBody)
+	// Print the status information (consider using a marshaller for better formatting)
+	// fmt.Printf("Pritunl Status:\n")
+	// fmt.Printf("  Organizations: %d\n", status.OrgCount)
+	// fmt.Printf("  Online Users:  %d\n", status.UsersOnline)
+	// fmt.Printf("  Total Users:   %d\n", status.UserCount)
+	// fmt.Printf("  Online Servers: %d\n", status.ServersOnline)
+	// fmt.Printf("  Total Servers:  %d\n", status.ServerCount)
+	// fmt.Printf("  Server Version: %s\n", status.ServerVersion)
+	// ... print other relevant fields
 
+	// Optional: Marshal the status struct for a more structured representation
+	statusBytes, err := json.MarshalIndent(status, "", "  ")
+	if err != nil {
+		log.Println("Error marshalling status:", err)
+	} else {
+		fmt.Println(string(statusBytes))
+	}
 }
+
 ```
 
 ## Features Status
