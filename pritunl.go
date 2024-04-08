@@ -2,9 +2,11 @@ package pritunl
 
 import (
 	"bytes"
+	"context"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -15,13 +17,15 @@ import (
 	"github.com/google/uuid"
 )
 
+// Client represents a Pritunl API client
 type Client struct {
 	BaseUrl   string
 	ApiToken  string
 	ApiSecret string
 }
 
-func PritunlClient(pritunl ...*Client) *Client {
+// NewClient creates a new Pritunl client instance
+func NewClient(pritunl ...*Client) (*Client, error) {
 	var baseURL string
 	var apiToken string
 	var apiSecret string
@@ -33,12 +37,21 @@ func PritunlClient(pritunl ...*Client) *Client {
 	} else {
 		if baseURL == "" {
 			baseURL = os.Getenv("PRITUNL_BASE_URL")
+			if baseURL == "" {
+				return nil, errors.New("missing Pritunl base URL")
+			}
 		}
 		if apiToken == "" {
 			apiToken = os.Getenv("PRITUNL_API_TOKEN")
+			if apiToken == "" {
+				return nil, errors.New("missing Pritunl API token")
+			}
 		}
 		if apiSecret == "" {
 			apiSecret = os.Getenv("PRITUNL_API_SECRET")
+			if apiSecret == "" {
+				return nil, errors.New("missing Pritunl API secret")
+			}
 		}
 	}
 
@@ -46,10 +59,11 @@ func PritunlClient(pritunl ...*Client) *Client {
 		BaseUrl:   baseURL,
 		ApiToken:  apiToken,
 		ApiSecret: apiSecret,
-	}
+	}, nil
 }
 
-func (c *Client) AuthRequest(method, path string, headers map[string]string, data []byte) (*http.Response, error) {
+// AuthRequest performs an authenticated API request
+func (c *Client) AuthRequest(ctx context.Context, method, path string, data []byte) (*http.Response, error) {
 	authTimestamp := strconv.FormatInt(time.Now().Unix(), 10)
 	authNonce := strings.ReplaceAll(uuid.New().String(), "-", "")
 	authString := fmt.Sprintf("%s&%s&%s&%s&%s", c.ApiToken, authTimestamp, authNonce, method, path)
@@ -57,26 +71,28 @@ func (c *Client) AuthRequest(method, path string, headers map[string]string, dat
 	hash.Write([]byte(authString))
 	authSignature := base64.StdEncoding.EncodeToString(hash.Sum(nil))
 
-	authHeaders := map[string]string{
+	headers := map[string]string{
 		"Auth-Token":     c.ApiToken,
 		"Auth-Timestamp": authTimestamp,
 		"Auth-Nonce":     authNonce,
 		"Auth-Signature": authSignature,
+		"Content-Type":   "application/json", // Default content type
+	}
+
+	req, err := http.NewRequestWithContext(ctx, method, c.BaseUrl+path, bytes.NewBuffer(data))
+	if err != nil {
+		return nil, err
 	}
 
 	for k, v := range headers {
-		authHeaders[k] = v
-	}
-
-	client := &http.Client{}
-	req, error := http.NewRequest(method, c.BaseUrl+path, bytes.NewBuffer(data))
-	if error != nil {
-		return nil, error
-	}
-
-	for k, v := range authHeaders {
 		req.Header.Set(k, v)
 	}
 
-	return client.Do(req)
+	client := &http.Client{}
+	response, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
 }
