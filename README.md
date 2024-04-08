@@ -37,7 +37,9 @@ import (
 )
 
 func main() {
-	// Create a new Pritunl client instance
+	/* INITIALIZATION AND FETCHING */
+
+	// Provide authentication credentials as needed for client creation
 	client, err := pritunl.NewClient()
 
 	// You can also initialize an instance by manually providing the arguments.
@@ -56,30 +58,28 @@ func main() {
 	ctx := context.Background()
 
 	// Retrieve the server status
-	status, err := client.StatusGet(ctx)
+	statuses, err := client.Status(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Print the status information (consider using a marshaller for better formatting)
-	// fmt.Printf("Pritunl Status:\n")
-	// fmt.Printf("  Organizations: %d\n", status.OrgCount)
-	// fmt.Printf("  Online Users:  %d\n", status.UsersOnline)
-	// fmt.Printf("  Total Users:   %d\n", status.UserCount)
-	// fmt.Printf("  Online Servers: %d\n", status.ServersOnline)
-	// fmt.Printf("  Total Servers:  %d\n", status.ServerCount)
-	// fmt.Printf("  Server Version: %s\n", status.ServerVersion)
-	// ... print other relevant fields
+	/* PRESENTATION */
 
-	// Optional: Marshal the status struct for a more structured representation
-	statusBytes, err := json.MarshalIndent(status, "", "  ")
+	// Per Object Representation
+	for _, status := range statuses {
+		fmt.Println("Server Version", status.ServerVersion)
+		fmt.Println("Loacal Networks:", status.LocalNetworks)
+	}
+
+	// JSON Representation
+	statusBytes, err := json.MarshalIndent(statuses, "", "  ")
 	if err != nil {
 		log.Println("Error marshalling status:", err)
 	} else {
 		fmt.Println(string(statusBytes))
 	}
-}
 
+}
 ```
 
 ## Features Status
@@ -90,7 +90,7 @@ Feature      | Method | Description                             | Status
 -------------|--------|-----------------------------------------|-----------------------
 Server       | Get    | Status of Pritunl Server                | :white_check_mark: Yes
 Key          | Get    | Generate or Retrieve a Key for the User | Not yet
-User         | Get    | Get the Information of Existing User    | Not yet
+User         | Get    | Get the Information of Existing User    | :white_check_mark: Yes
 User         | Post   | Create a New User                       | Not yet
 User         | Put    | Update an Existing User                 | Not yet
 User         | Delete | Delete an User                          | Not yet
