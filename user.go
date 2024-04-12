@@ -182,11 +182,8 @@ func (c *Client) UserUpdate(ctx context.Context, orgId string, userId string, up
 }
 
 // UserDelete updates an exiting user on the server
-func (c *Client) UserDelete(ctx context.Context, orgId string, userId string, deleteUser UserRequest) ([]UserResponse, error) {
-	userData, err := json.Marshal(deleteUser)
-	if err != nil {
-		return nil, fmt.Errorf("failed to marshal user data: %w", err)
-	}
+func (c *Client) UserDelete(ctx context.Context, orgId string, userId string) ([]UserResponse, error) {
+	var userData []byte
 
 	path := fmt.Sprintf("/user/%s/%s", orgId, userId)
 

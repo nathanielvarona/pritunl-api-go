@@ -89,6 +89,6 @@ func main() {
 | UserDelete         | Delete an User                          | :white_check_mark: Yes |
 | OrganizationGet    | Get the Information of Existing Org     | :white_check_mark: Yes |
 | OrganizationCreate | Create a New Org                        | :white_check_mark: Yes |
-| OrganizationUpdate | Update an Existing Org                  | Not yet                |
-| OrganizationDelete | Delete an Org                           | Not yet                |
+| OrganizationUpdate | Update an Existing Org                  | :white_check_mark: Yes |
+| OrganizationDelete | Delete an Org                           | :white_check_mark: Yes |
 | KeyGet             | Generate or Retrieve a Key for the User | Not yet                |
