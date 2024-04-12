@@ -9,8 +9,6 @@ import (
 	"github.com/nathanielvarona/pritunl-api-go"
 )
 
-// Include UserResponse struct definition here or import from its file
-
 func main() {
 	/* INITIALIZATION */
 	// Provide authentication credentials as needed for client creation

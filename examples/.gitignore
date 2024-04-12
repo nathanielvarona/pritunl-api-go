@@ -9,3 +9,4 @@
 !organization-create.go
 !organization-update.go
 !organization-delete.go
+!key-get.go
