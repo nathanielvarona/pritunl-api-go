@@ -78,17 +78,17 @@ func main() {
 
 ## Features
 
-Core API Client Package/Library Features
+### Core Pritunl API Client
 
-| Feature      | Method | Description                             | Status                 |
-|--------------|--------|-----------------------------------------|------------------------|
-| Status       | Get    | Status of Pritunl Server                | :white_check_mark: Yes |
-| User         | Get    | Get the Information of Existing User    | :white_check_mark: Yes |
-| User         | Post   | Create a New User                       | :white_check_mark: Yes |
-| User         | Put    | Update an Existing User                 | :white_check_mark: Yes |
-| User         | Delete | Delete an User                          | :white_check_mark: Yes |
-| Organization | Get    | Get the Information of Existing Org     | :white_check_mark: Yes |
-| Organization | Post   | Create a New Org                        | Not yet                |
-| Organization | Put    | Update an Existing Org                  | Not yet                |
-| Organization | Delete | Delete an Org                           | Not yet                |
-| Key          | Get    | Generate or Retrieve a Key for the User | Not yet                |
+| Feature Function   | Description                             | Status                 |
+|--------------------|-----------------------------------------|------------------------|
+| StatusGet          | Status of Pritunl Server                | :white_check_mark: Yes |
+| UserGet            | Get the Information of Existing User    | :white_check_mark: Yes |
+| UserCreate         | Create a New User                       | :white_check_mark: Yes |
+| UserUpdate         | Update an Existing User                 | :white_check_mark: Yes |
+| UserDelete         | Delete an User                          | :white_check_mark: Yes |
+| OrganizationGet    | Get the Information of Existing Org     | :white_check_mark: Yes |
+| OrganizationCreate | Create a New Org                        | :white_check_mark: Yes |
+| OrganizationUpdate | Update an Existing Org                  | Not yet                |
+| OrganizationDelete | Delete an Org                           | Not yet                |
+| KeyGet             | Generate or Retrieve a Key for the User | Not yet                |
