@@ -102,3 +102,33 @@ func (c *Client) OrganizationCreate(ctx context.Context, newOrganization Organiz
 	// Return the slice of organizations
 	return organizations, nil
 }
+
+// OrganizationUpdate update an existing organization on the server
+func (c *Client) OrganizationUpdate(ctx context.Context, orgId string, updateOrganization OrganizationRequest) ([]OrganizationResponse, error) {
+	orgData, err := json.Marshal(updateOrganization)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal organization data: %w", err)
+	}
+
+	path := fmt.Sprintf("/organization/%s", orgId)
+
+	response, err := c.AuthRequest(ctx, http.MethodPut, path, orgData)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := handleResponse(response)
+	if err != nil {
+		return nil, err
+	}
+	defer body.Close()
+
+	// Unmarshal the JSON data using the helper function
+	var organizations []OrganizationResponse
+	if err := handleUnmarshalOrganizations(body, &organizations); err != nil {
+		return nil, err
+	}
+
+	// Return the slice of organizations
+	return organizations, nil
+}
