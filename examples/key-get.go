@@ -1,4 +1,3 @@
-// example/user.go
 package main
 
 import (
@@ -21,18 +20,17 @@ func main() {
 	// Create a context for the request
 	ctx := context.Background()
 
-	// Update an Existing Organization
-	orgs, err := client.OrganizationDelete(ctx, "65290fdcec07ec9111bd741e")
+	// Genreate or Retrieve Key
+	keys, err := client.KeyGet(ctx, "641351fee8f281432b807a50", "641351ffe8f281432b807a6e")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Struct Output
-	for _, org := range orgs {
-		fmt.Println("Organization Name:", org.Name)
-		fmt.Println("Organization ID:", org.ID)
-		fmt.Println("User Count:", org.UserCount)
+	for _, key := range keys {
+		fmt.Println("Key View URL:", key.ViewURL)
+		fmt.Println("Key URI URI:", key.URIURL)
+		fmt.Println("Key URL:", key.KeyURL)
 		fmt.Println("------")
 	}
-
 }
