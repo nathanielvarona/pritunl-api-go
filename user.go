@@ -181,3 +181,36 @@ func (c *Client) UserUpdate(ctx context.Context, orgId string, userId string, up
 
 	return updateuser, nil
 }
+
+// UserDelete updates an exiting user on the server
+func (c *Client) UserDelete(ctx context.Context, orgId string, userId string, deleteUser UserRequest) ([]UserResponse, error) {
+	userData, err := json.Marshal(deleteUser)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal user data: %w", err)
+	}
+
+	path := fmt.Sprintf("/user/%s/%s", orgId, userId)
+
+	response, err := c.AuthRequest(ctx, http.MethodDelete, path, userData)
+	if err != nil {
+		return nil, err
+	}
+	defer response.Body.Close()
+
+	bodyBytes, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, fmt.Errorf("unexpected status code: %d", response.StatusCode)
+	}
+
+	var deleteuser []UserResponse
+	if err := json.Unmarshal(bodyBytes, &deleteuser); err != nil {
+		var singleUser UserResponse
+		if unmarshalErr := json.Unmarshal(bodyBytes, &singleUser); unmarshalErr == nil {
+			deleteuser = append(deleteuser, singleUser)
+		} else {
+			return nil, fmt.Errorf("failed to unmarshal user response: %w", err)
+		}
+	}
+
+	return deleteuser, nil
+}
