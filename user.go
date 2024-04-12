@@ -75,32 +75,7 @@ type Server struct {
 	ConnectedSince interface{} `json:"connected_since"`
 }
 
-func handleResponse(response *http.Response) (io.ReadCloser, error) {
-	if response.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("unexpected status code: %d", response.StatusCode)
-	}
-	return response.Body, nil
-}
-
 func handleUnmarshalUsers(body io.Reader, users *[]UserResponse) error {
-	bodyBytes, err := io.ReadAll(body)
-	if err != nil {
-		return fmt.Errorf("failed to read response body: %w", err)
-	}
-	// Attempt to unmarshal the entire response into a slice of UserResponse
-	if err := json.Unmarshal(bodyBytes, users); err != nil {
-		// If unmarshalling as a list fails, try unmarshalling as a single UserResponse
-		var singleUser UserResponse
-		if unmarshalErr := json.Unmarshal(bodyBytes, &singleUser); unmarshalErr == nil {
-			*users = append(*users, singleUser) // Add the single user to the slice
-		} else {
-			return fmt.Errorf("failed to unmarshal user response: %w", err) // Return original error
-		}
-	}
-	return nil
-}
-
-func unmarshalUsers(body io.Reader, users *[]UserResponse) error {
 	bodyBytes, err := io.ReadAll(body)
 	if err != nil {
 		return fmt.Errorf("failed to read response body: %w", err)
@@ -141,7 +116,7 @@ func (c *Client) UserGet(ctx context.Context, orgId string, userId ...string) ([
 
 	// Unmarshal the JSON data using the helper function
 	var users []UserResponse
-	if err := unmarshalUsers(body, &users); err != nil {
+	if err := handleUnmarshalUsers(body, &users); err != nil {
 		return nil, err
 	}
 
@@ -171,7 +146,7 @@ func (c *Client) UserCreate(ctx context.Context, orgId string, newUser UserReque
 
 	// Unmarshal the JSON data using the helper function
 	var users []UserResponse
-	if err := unmarshalUsers(body, &users); err != nil {
+	if err := handleUnmarshalUsers(body, &users); err != nil {
 		return nil, err
 	}
 	return users, nil
@@ -200,7 +175,7 @@ func (c *Client) UserUpdate(ctx context.Context, orgId string, userId string, up
 
 	// Unmarshal the JSON data using the helper function
 	var users []UserResponse
-	if err := unmarshalUsers(body, &users); err != nil {
+	if err := handleUnmarshalUsers(body, &users); err != nil {
 		return nil, err
 	}
 	return users, nil
@@ -228,7 +203,7 @@ func (c *Client) UserDelete(ctx context.Context, orgId string, userId string, de
 
 	// Unmarshal the JSON data using the helper function
 	var users []UserResponse
-	if err := unmarshalUsers(body, &users); err != nil {
+	if err := handleUnmarshalUsers(body, &users); err != nil {
 		return nil, err
 	}
 	return users, nil

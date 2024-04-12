@@ -81,13 +81,13 @@ func main() {
 Core API Client Package/Library Features
 
 | Feature      | Method | Description                             | Status                 |
-| ------------ | ------ | --------------------------------------- | ---------------------- |
+|--------------|--------|-----------------------------------------|------------------------|
 | Status       | Get    | Status of Pritunl Server                | :white_check_mark: Yes |
 | User         | Get    | Get the Information of Existing User    | :white_check_mark: Yes |
 | User         | Post   | Create a New User                       | :white_check_mark: Yes |
 | User         | Put    | Update an Existing User                 | :white_check_mark: Yes |
 | User         | Delete | Delete an User                          | :white_check_mark: Yes |
-| Organization | Get    | Get the Information of Existing Org     | Not yet                |
+| Organization | Get    | Get the Information of Existing Org     | :white_check_mark: Yes |
 | Organization | Post   | Create a New Org                        | Not yet                |
 | Organization | Put    | Update an Existing Org                  | Not yet                |
 | Organization | Delete | Delete an Org                           | Not yet                |

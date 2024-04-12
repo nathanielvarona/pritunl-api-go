@@ -12,7 +12,8 @@ import (
 func main() {
 	/* INITIALIZATION */
 	// Provide authentication credentials as needed for client creation
-	client, err := pritunl.NewClient( /* provide credentials here if environment variables is not present */ )
+	// Automaticlly sets from environment variables if present
+	client, err := pritunl.NewClient()
 	if err != nil {
 		log.Fatal(err)
 	}

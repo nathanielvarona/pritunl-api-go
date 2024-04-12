@@ -5,3 +5,4 @@
 !user-create.go
 !user-update.go
 !user-delete.go
+!organization-get.go
