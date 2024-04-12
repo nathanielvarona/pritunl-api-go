@@ -9,6 +9,8 @@ import (
 	"github.com/nathanielvarona/pritunl-api-go"
 )
 
+// Include UserResponse struct definition here or import from its file
+
 func main() {
 	/* INITIALIZATION */
 	// Provide authentication credentials as needed for client creation
@@ -21,17 +23,18 @@ func main() {
 	// Create a context for the request
 	ctx := context.Background()
 
-	// Call UserUpdate to update existing user for organization `641351fee8f281432b807a50`
-	users, err := client.UserDelete(ctx, "641351fee8f281432b807a50", "6618b08ea7013fe771cae514")
+	// Update an Existing Organization
+	orgs, err := client.OrganizationDelete(ctx, "65290fdcec07ec9111bd741e")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	if err != nil {
-		// Handle error
-		fmt.Println("Error updating user:", err)
-	} else {
-		fmt.Println("Successfully updating users:", users)
+	// Struct Output
+	for _, org := range orgs {
+		fmt.Println("Organization Name:", org.Name)
+		fmt.Println("Organization ID:", org.ID)
+		fmt.Println("User Count:", org.UserCount)
+		fmt.Println("------")
 	}
 
 }

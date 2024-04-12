@@ -132,3 +132,30 @@ func (c *Client) OrganizationUpdate(ctx context.Context, orgId string, updateOrg
 	// Return the slice of organizations
 	return organizations, nil
 }
+
+// OrganizationDelete delete an existing organization on the server
+func (c *Client) OrganizationDelete(ctx context.Context, orgId string) ([]OrganizationResponse, error) {
+	var orgData []byte
+
+	path := fmt.Sprintf("/organization/%s", orgId)
+
+	response, err := c.AuthRequest(ctx, http.MethodDelete, path, orgData)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := handleResponse(response)
+	if err != nil {
+		return nil, err
+	}
+	defer body.Close()
+
+	// Unmarshal the JSON data using the helper function
+	var organizations []OrganizationResponse
+	if err := handleUnmarshalOrganizations(body, &organizations); err != nil {
+		return nil, err
+	}
+
+	// Return the slice of organizations
+	return organizations, nil
+}
