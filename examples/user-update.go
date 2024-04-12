@@ -29,7 +29,7 @@ func main() {
 	}
 
 	// Call UserUpdate to update existing user for organization `641351fee8f281432b807a50`
-	users, err := client.UserUpdate(ctx, "641351fee8f281432b807a50", "653249d8620881441b0069d2", *updateUser)
+	users, err := client.UserUpdate(ctx, "641351fee8f281432b807a50", "6617901aa7013fe771ca3ed8", *updateUser)
 	if err != nil {
 		log.Fatal(err)
 	}

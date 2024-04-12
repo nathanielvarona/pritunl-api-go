@@ -21,7 +21,7 @@ func main() {
 	ctx := context.Background()
 
 	// Create a new UserRequest object with desired data
-	updateUser := &pritunl.UserRequest{
+	deleteUser := &pritunl.UserRequest{
 		Name:  "new_user",
 		Email: "updateuser@domain.dev",
 		// Set Disabled to false (default behavior) or any other desired value
@@ -29,7 +29,7 @@ func main() {
 	}
 
 	// Call UserUpdate to update existing user for organization `641351fee8f281432b807a50`
-	users, err := client.UserDelete(ctx, "641351fee8f281432b807a50", "653249d8620881441b0069d2", *updateUser)
+	users, err := client.UserDelete(ctx, "641351fee8f281432b807a50", "6617901aa7013fe771ca3ed8", *deleteUser)
 	if err != nil {
 		log.Fatal(err)
 	}
