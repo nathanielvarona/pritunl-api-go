@@ -10,8 +10,7 @@ import (
 )
 
 func main() {
-	/* INITIALIZATION AND FETCHING */
-
+	/* INITIALIZATION */
 	// Provide authentication credentials as needed for client creation
 	client, err := pritunl.NewClient( /* provide credentials here if environment variables is not present */ )
 	if err != nil {
@@ -28,7 +27,6 @@ func main() {
 	}
 
 	/* PRESENTATION */
-
 	// Per Object Representation
 	for _, status := range statuses {
 		fmt.Println("Server Version", status.ServerVersion)

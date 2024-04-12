@@ -8,6 +8,12 @@ import (
 	"net/http"
 )
 
+type UserRequest struct {
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Disabled bool   `json:"disabled,omitempty"`
+}
+
 type UserResponse struct {
 	ID               string        `json:"id"`
 	Organization     string        `json:"organization"`
@@ -53,7 +59,7 @@ type Server struct {
 }
 
 // User retrieves a user or a list of users from the server and unmarshals the response to a UserResponse struct
-func (c *Client) User(ctx context.Context, orgId string, userId ...string) ([]UserResponse, error) {
+func (c *Client) UserGet(ctx context.Context, orgId string, userId ...string) ([]UserResponse, error) {
 	var data []byte
 	path := fmt.Sprintf("/user/%s", orgId)
 
@@ -91,4 +97,37 @@ func (c *Client) User(ctx context.Context, orgId string, userId ...string) ([]Us
 
 	// Return the slice of users
 	return users, nil
+}
+
+// UserCreate creates a new user on the server
+func (c *Client) UserCreate(ctx context.Context, orgId string, newUser UserRequest) ([]UserResponse, error) {
+	userData, err := json.Marshal(newUser)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal user data: %w", err)
+	}
+
+	path := fmt.Sprintf("/user/%s", orgId)
+
+	response, err := c.AuthRequest(ctx, http.MethodPost, path, userData)
+	if err != nil {
+		return nil, err
+	}
+	defer response.Body.Close()
+
+	bodyBytes, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, fmt.Errorf("unexpected status code: %d", response.StatusCode)
+	}
+
+	var createuser []UserResponse
+	if err := json.Unmarshal(bodyBytes, &createuser); err != nil {
+		var singleUser UserResponse
+		if unmarshalErr := json.Unmarshal(bodyBytes, &singleUser); unmarshalErr == nil {
+			createuser = append(createuser, singleUser)
+		} else {
+			return nil, fmt.Errorf("failed to unmarshal user response: %w", err)
+		}
+	}
+
+	return createuser, nil
 }
