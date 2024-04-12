@@ -25,7 +25,7 @@ type Status struct {
 }
 
 // StatusGet retrieves the Pritunl server status
-func (c *Client) Status(ctx context.Context) ([]Status, error) {
+func (c *Client) StatusGet(ctx context.Context) ([]Status, error) {
 	var data []byte
 
 	response, err := c.AuthRequest(ctx, http.MethodGet, "/status", data)

@@ -13,6 +13,15 @@ func main() {
 	/* INITIALIZATION */
 	// Provide authentication credentials as needed for client creation
 	client, err := pritunl.NewClient( /* provide credentials here if environment variables is not present */ )
+
+	// You can also initialize an instance by manually providing the arguments.
+	//
+	// client := pritunl.NewClient(&pritunl.Client{
+	// 	BaseUrl:   "<PRITUNL API URL>",
+	// 	ApiToken:  "<PRITUNL API TOKEN>",
+	// 	ApiSecret: "<PRITUNL API SECRET>",
+	// })
+
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -21,19 +30,19 @@ func main() {
 	ctx := context.Background()
 
 	// Retrieve the server status
-	statuses, err := client.Status(ctx)
+	statuses, err := client.StatusGet(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	/* PRESENTATION */
-	// Per Object Representation
-	for _, status := range statuses {
-		fmt.Println("Server Version", status.ServerVersion)
-		fmt.Println("Loacal Networks:", status.LocalNetworks)
+	// Struct Output
+	for _, stat := range status {
+		fmt.Println("Server Version", stat.ServerVersion)
+		fmt.Println("Loacal Networks:", stat.LocalNetworks)
 	}
 
-	// JSON Representation
+	// JSON Output
 	statusBytes, err := json.MarshalIndent(statuses, "", "  ")
 	if err != nil {
 		log.Println("Error marshalling status:", err)

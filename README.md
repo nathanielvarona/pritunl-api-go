@@ -4,8 +4,6 @@ Pritunl API Client for Go
 > [!WARNING]
 > The project is currently in development, so some features may be limited or unavailable at this time.
 
-
-
 ## API Usage
 
 Load your Pritunl API Credentials in our Environment Variables.
@@ -22,8 +20,6 @@ Get the Pritunl API Client for Go Package/Library
 go get github.com/nathanielvarona/pritunl-api-go
 ```
 
-
-
 ```go
 package main
 
@@ -37,12 +33,11 @@ import (
 )
 
 func main() {
-	/* INITIALIZATION AND FETCHING */
-
+	/* INITIALIZATION */
 	// Provide authentication credentials as needed for client creation
-	client, err := pritunl.NewClient()
+	client, err := pritunl.NewClient( /* provide credentials here if environment variables is not present */ )
 
-	// You can also initialize an instance by manually providing the arguments.
+  // You can also initialize an instance by manually providing the arguments.
 	//
 	// client := pritunl.NewClient(&pritunl.Client{
 	// 	BaseUrl:   "<PRITUNL API URL>",
@@ -50,7 +45,7 @@ func main() {
 	// 	ApiSecret: "<PRITUNL API SECRET>",
 	// })
 
-	if err != nil {
+  if err != nil {
 		log.Fatal(err)
 	}
 
@@ -58,20 +53,19 @@ func main() {
 	ctx := context.Background()
 
 	// Retrieve the server status
-	statuses, err := client.Status(ctx)
+	statuses, err := client.StatusGet(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	/* PRESENTATION */
-
-	// Per Object Representation
-	for _, status := range statuses {
-		fmt.Println("Server Version", status.ServerVersion)
-		fmt.Println("Loacal Networks:", status.LocalNetworks)
+	// Struct Output
+	for _, stat := range status {
+		fmt.Println("Server Version", stat.ServerVersion)
+		fmt.Println("Loacal Networks:", stat.LocalNetworks)
 	}
 
-	// JSON Representation
+	// JSON Output
 	statusBytes, err := json.MarshalIndent(statuses, "", "  ")
 	if err != nil {
 		log.Println("Error marshalling status:", err)
@@ -82,19 +76,19 @@ func main() {
 }
 ```
 
-## Features Status
+## Features
 
 Core API Client Package/Library Features
 
 Feature      | Method | Description                             | Status
 -------------|--------|-----------------------------------------|-----------------------
-Server       | Get    | Status of Pritunl Server                | :white_check_mark: Yes
-Key          | Get    | Generate or Retrieve a Key for the User | Not yet
+Status       | Get    | Status of Pritunl Server                | :white_check_mark: Yes
 User         | Get    | Get the Information of Existing User    | :white_check_mark: Yes
-User         | Post   | Create a New User                       | Not yet
-User         | Put    | Update an Existing User                 | Not yet
-User         | Delete | Delete an User                          | Not yet
+User         | Post   | Create a New User                       | :white_check_mark: Yes
+User         | Put    | Update an Existing User                 | :white_check_mark: Yes
+User         | Delete | Delete an User                          | :white_check_mark: Yes
 Organization | Get    | Get the Information of Existing Org     | Not yet
 Organization | Post   | Create a New Org                        | Not yet
 Organization | Put    | Update an Existing Org                  | Not yet
 Organization | Delete | Delete an Org                           | Not yet
+Key          | Get    | Generate or Retrieve a Key for the User | Not yet
