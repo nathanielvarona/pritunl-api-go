@@ -75,7 +75,32 @@ type Server struct {
 	ConnectedSince interface{} `json:"connected_since"`
 }
 
-// User retrieves a user or a list of users from the server and unmarshals the response to a UserResponse struct
+func handleResponse(response *http.Response) (io.ReadCloser, error) {
+	if response.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("unexpected status code: %d", response.StatusCode)
+	}
+	return response.Body, nil
+}
+
+func handleUnmarshalUsers(body io.Reader, users *[]UserResponse) error {
+	bodyBytes, err := io.ReadAll(body)
+	if err != nil {
+		return fmt.Errorf("failed to read response body: %w", err)
+	}
+	// Attempt to unmarshal the entire response into a slice of UserResponse
+	if err := json.Unmarshal(bodyBytes, users); err != nil {
+		// If unmarshalling as a list fails, try unmarshalling as a single UserResponse
+		var singleUser UserResponse
+		if unmarshalErr := json.Unmarshal(bodyBytes, &singleUser); unmarshalErr == nil {
+			*users = append(*users, singleUser) // Add the single user to the slice
+		} else {
+			return fmt.Errorf("failed to unmarshal user response: %w", err) // Return original error
+		}
+	}
+	return nil
+}
+
+// UserGet retrieves a user or users on the server
 func (c *Client) UserGet(ctx context.Context, orgId string, userId ...string) ([]UserResponse, error) {
 	var data []byte
 	path := fmt.Sprintf("/user/%s", orgId)
@@ -89,26 +114,23 @@ func (c *Client) UserGet(ctx context.Context, orgId string, userId ...string) ([
 	if err != nil {
 		return nil, err
 	}
-	defer response.Body.Close()
 
-	bodyBytes, err := io.ReadAll(response.Body)
+	body, err := handleResponse(response)
 	if err != nil {
-		return nil, fmt.Errorf("failed to decode user response: %w", err)
+		return nil, err
 	}
-
-	if response.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("unexpected status code: %d", response.StatusCode)
-	}
+	defer body.Close()
 
 	// Unmarshal the JSON data into a slice of UserResponse objects
 	var users []UserResponse
-	if err := json.Unmarshal(bodyBytes, &users); err != nil {
+	if err := handleUnmarshalUsers(body, &users); err != nil {
 		// Check for single user response (may not be wrapped in an array)
 		var singleUser UserResponse
-		if unmarshalErr := json.Unmarshal(bodyBytes, &singleUser); unmarshalErr == nil {
-			users = append(users, singleUser)
+		if unmarshalErr := handleUnmarshalUsers(body, &users); unmarshalErr == nil {
+			users = append(users, singleUser) // Add the single user
 		} else {
-			return nil, fmt.Errorf("failed to unmarshal user response: %w", err)
+			// Handle single user unmarshalling error (consider returning specific error or logging)
+			return nil, fmt.Errorf("failed to unmarshal single user response: %w", unmarshalErr)
 		}
 	}
 
@@ -129,17 +151,17 @@ func (c *Client) UserCreate(ctx context.Context, orgId string, newUser UserReque
 	if err != nil {
 		return nil, err
 	}
-	defer response.Body.Close()
 
-	bodyBytes, err := io.ReadAll(response.Body)
+	body, err := handleResponse(response)
 	if err != nil {
-		return nil, fmt.Errorf("unexpected status code: %d", response.StatusCode)
+		return nil, err
 	}
+	defer body.Close()
 
 	var createuser []UserResponse
-	if err := json.Unmarshal(bodyBytes, &createuser); err != nil {
+	if err := handleUnmarshalUsers(body, &createuser); err != nil {
 		var singleUser UserResponse
-		if unmarshalErr := json.Unmarshal(bodyBytes, &singleUser); unmarshalErr == nil {
+		if unmarshalErr := handleUnmarshalUsers(body, &createuser); unmarshalErr == nil {
 			createuser = append(createuser, singleUser)
 		} else {
 			return nil, fmt.Errorf("failed to unmarshal user response: %w", err)
@@ -162,17 +184,17 @@ func (c *Client) UserUpdate(ctx context.Context, orgId string, userId string, up
 	if err != nil {
 		return nil, err
 	}
-	defer response.Body.Close()
 
-	bodyBytes, err := io.ReadAll(response.Body)
+	body, err := handleResponse(response)
 	if err != nil {
-		return nil, fmt.Errorf("unexpected status code: %d", response.StatusCode)
+		return nil, err
 	}
+	defer body.Close()
 
 	var updateuser []UserResponse
-	if err := json.Unmarshal(bodyBytes, &updateuser); err != nil {
+	if err := handleUnmarshalUsers(body, &updateuser); err != nil {
 		var singleUser UserResponse
-		if unmarshalErr := json.Unmarshal(bodyBytes, &singleUser); unmarshalErr == nil {
+		if unmarshalErr := handleUnmarshalUsers(body, &updateuser); unmarshalErr == nil {
 			updateuser = append(updateuser, singleUser)
 		} else {
 			return nil, fmt.Errorf("failed to unmarshal user response: %w", err)
@@ -195,17 +217,17 @@ func (c *Client) UserDelete(ctx context.Context, orgId string, userId string, de
 	if err != nil {
 		return nil, err
 	}
-	defer response.Body.Close()
 
-	bodyBytes, err := io.ReadAll(response.Body)
+	body, err := handleResponse(response)
 	if err != nil {
-		return nil, fmt.Errorf("unexpected status code: %d", response.StatusCode)
+		return nil, err
 	}
+	defer body.Close()
 
 	var deleteuser []UserResponse
-	if err := json.Unmarshal(bodyBytes, &deleteuser); err != nil {
+	if err := handleUnmarshalUsers(body, &deleteuser); err != nil {
 		var singleUser UserResponse
-		if unmarshalErr := json.Unmarshal(bodyBytes, &singleUser); unmarshalErr == nil {
+		if unmarshalErr := handleUnmarshalUsers(body, &deleteuser); unmarshalErr == nil {
 			deleteuser = append(deleteuser, singleUser)
 		} else {
 			return nil, fmt.Errorf("failed to unmarshal user response: %w", err)
