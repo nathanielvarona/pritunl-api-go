@@ -1,0 +1,6 @@
+*
+!.gitignore
+!status-get.go
+!user-get.go
+!user-create.go
+!user-update.go

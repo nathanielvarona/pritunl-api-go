@@ -9,9 +9,26 @@ import (
 )
 
 type UserRequest struct {
-	Name     string `json:"name"`
-	Email    string `json:"email"`
-	Disabled bool   `json:"disabled,omitempty"`
+	Name            string                   `json:"name"`
+	Email           string                   `json:"email"`
+	AuthType        string                   `json:"auth_type"`
+	YubicoId        string                   `json:"yubico_id"`
+	Groups          []string                 `json:"groups"`
+	Pin             string                   `json:"pin"`
+	Disabled        bool                     `json:"disabled"`
+	NetworkLinks    []string                 `json:"network_links"`
+	BypassSecondary bool                     `json:"bypass_secondary"`
+	ClientToClient  bool                     `json:"client_to_client"`
+	MacAddresses    []string                 `json:"mac_addresses"`
+	DnsServers      []string                 `json:"dns_servers"`
+	DnsSuffix       string                   `json:"dns_suffix"`
+	PortForwarding  []UserPortForwardingData `json:"port_forwarding"`
+}
+
+type UserPortForwardingData struct {
+	Protocol string `json:"protocol"`
+	Port     string `json:"port"`
+	Dport    string `json:"dport"`
 }
 
 type UserResponse struct {
@@ -130,4 +147,37 @@ func (c *Client) UserCreate(ctx context.Context, orgId string, newUser UserReque
 	}
 
 	return createuser, nil
+}
+
+// UserUpdate updates an exiting user on the server
+func (c *Client) UserUpdate(ctx context.Context, orgId string, userId string, updateUser UserRequest) ([]UserResponse, error) {
+	userData, err := json.Marshal(updateUser)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal user data: %w", err)
+	}
+
+	path := fmt.Sprintf("/user/%s/%s", orgId, userId)
+
+	response, err := c.AuthRequest(ctx, http.MethodPut, path, userData)
+	if err != nil {
+		return nil, err
+	}
+	defer response.Body.Close()
+
+	bodyBytes, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, fmt.Errorf("unexpected status code: %d", response.StatusCode)
+	}
+
+	var updateuser []UserResponse
+	if err := json.Unmarshal(bodyBytes, &updateuser); err != nil {
+		var singleUser UserResponse
+		if unmarshalErr := json.Unmarshal(bodyBytes, &singleUser); unmarshalErr == nil {
+			updateuser = append(updateuser, singleUser)
+		} else {
+			return nil, fmt.Errorf("failed to unmarshal user response: %w", err)
+		}
+	}
+
+	return updateuser, nil
 }
