@@ -53,7 +53,7 @@ func main() {
 	ctx := context.Background()
 
 	// Retrieve the server status
-	statuses, err := client.StatusGet(ctx)
+	status, err := client.StatusGet(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -66,7 +66,7 @@ func main() {
 	}
 
 	// JSON Output
-	statusBytes, err := json.MarshalIndent(statuses, "", "  ")
+	statusBytes, err := json.MarshalIndent(status, "", "  ")
 	if err != nil {
 		log.Println("Error marshalling status:", err)
 	} else {
