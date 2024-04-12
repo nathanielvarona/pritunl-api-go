@@ -14,7 +14,8 @@ import (
 func main() {
 	/* INITIALIZATION AND FETCHING */
 	// Provide authentication credentials as needed for client creation
-	client, err := pritunl.NewClient( /* provide credentials here if environment variables is not present */ )
+	// Automaticlly sets from environment variables if present
+	client, err := pritunl.NewClient()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -28,7 +29,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Per Object Representation
+	// Struct Output
 	for _, user := range user_org1 {
 		fmt.Println("User Name:", user.Name)
 		fmt.Println("User ID:", user.ID)
@@ -44,8 +45,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// /* PRESENTATION */
-	// Per Object Representation
+	// Struct Output
 	for _, user := range users_org2 {
 		fmt.Println("User Name:", user.Name)
 		fmt.Println("User ID:", user.ID)
@@ -53,7 +53,7 @@ func main() {
 		fmt.Println("------")
 	}
 
-	// JSON Representation
+	// JSON Output
 	// userBytes, err := json.MarshalIndent(users_org2, "", "  ")
 	// if err != nil {
 	// 	log.Println("Error marshalling user:", err)
