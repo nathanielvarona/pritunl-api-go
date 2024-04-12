@@ -11,8 +11,8 @@ Load your Pritunl API Credentials in our Environment Variables.
 
 ```bash
 export PRITUNL_BASE_URL="https://vpn.domain.tld/"
-export PRITUNL_API_TOKEN="XXXXXXXXXXXXXXXXXXXXX"
-export PRITUNL_API_SECRET="XXXXXXXXXXXXXXXXXXXXX"
+export PRITUNL_API_TOKEN="<PRITUNL API TOKEN>"
+export PRITUNL_API_SECRET="<PRITUNL API SECRET>"
 ```
 
 Get the Pritunl API Client for Go Package/Library
