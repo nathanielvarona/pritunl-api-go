@@ -4,3 +4,4 @@
 !user-get.go
 !user-create.go
 !user-update.go
+!user-delete.go
