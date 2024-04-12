@@ -14,7 +14,6 @@ import (
 
 func main() {
 	/* INITIALIZATION AND FETCHING */
-
 	// Provide authentication credentials as needed for client creation
 	client, err := pritunl.NewClient( /* provide credentials here if environment variables is not present */ )
 	if err != nil {
@@ -25,13 +24,12 @@ func main() {
 	ctx := context.Background()
 
 	// Retrieve all users for organization "641351fee8f281432b807a50"
-	users, err := client.User(ctx, "641351fee8f281432b807a50")
+	users, err := client.UserGet(ctx, "641351fee8f281432b807a50")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	/* PRESENTATION */
-
 	// Per Object Representation
 	for _, user := range users {
 		fmt.Println("User ID:", user.ID)
@@ -40,7 +38,7 @@ func main() {
 	}
 
 	// Retrieve specific user "644b2ba8cc3f875be1b7658d" under the organization "64131e880654550010d30c54"
-	user, err := client.User(ctx, "64131e880654550010d30c54", "644b2ba8cc3f875be1b7658d") // Only provide organization ID and desired user ID
+	user, err := client.UserGet(ctx, "64131e880654550010d30c54", "644b2ba8cc3f875be1b7658d") // Only provide organization ID and desired user ID
 	if err != nil {
 		log.Fatal(err)
 	}
