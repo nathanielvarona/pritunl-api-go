@@ -97,7 +97,7 @@ func main() {
 | ServerGet          | Get the Information of Existing Server  | :white_check_mark: Yes |
 | ServerCreate       | Create a New Server                     | :white_check_mark: Yes |
 | ServerUpdate       | Update an existing Server               | :white_check_mark: Yes |
-| ServerDelete       | Delete a Server                         | Not Yet                |
+| ServerDelete       | Delete a Server                         | :white_check_mark: Yes |
 
 ### Future Enhancements (CLI)
 

@@ -222,3 +222,30 @@ func (c *Client) ServerUpdate(ctx context.Context, srvId string, newServer Serve
 	// Return the slice of servers
 	return servers, nil
 }
+
+// ServerUpdate update an existing server
+func (c *Client) ServerDelete(ctx context.Context, srvId string) ([]ServerResponse, error) {
+	var serverData []byte
+
+	path := fmt.Sprintf("/server/%s", srvId)
+
+	response, err := c.AuthRequest(ctx, http.MethodDelete, path, serverData)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := handleResponse(response)
+	if err != nil {
+		return nil, err
+	}
+	defer body.Close()
+
+	// Unmarshal the JSON data using the helper function
+	var servers []ServerResponse
+	if err := handleUnmarshalServers(body, &servers); err != nil {
+		return nil, err
+	}
+
+	// Return the slice of servers
+	return servers, nil
+}

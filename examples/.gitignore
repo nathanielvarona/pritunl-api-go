@@ -13,3 +13,4 @@
 !server-get.go
 !server-create.go
 !server-update.go
+!server-delete.go
