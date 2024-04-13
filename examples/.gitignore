@@ -11,3 +11,4 @@
 !organization-delete.go
 !key-get.go
 !server-get.go
+!server-create.go

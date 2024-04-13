@@ -34,7 +34,6 @@ import (
 )
 
 func main() {
-	/* INITIALIZATION */
 	// Provide authentication credentials as needed for client creation
 	// Automaticlly sets from environment variables if present
 	client, err := pritunl.NewClient()
@@ -76,6 +75,9 @@ func main() {
 }
 ```
 
+> [!TIP]
+> See the [examples](./examples) folder for code examples demonstrating how to use this library.
+
 ## Features
 
 ### Core Pritunl API Client
@@ -99,5 +101,5 @@ func main() {
 
 ### Future Enhancements (CLI)
 
-1. **CLI Framework:** Consider using a popular framework like Cobra (https://github.com/spf13/cobra) or Viper (https://github.com/google/go-github) to simplify the command structure, argument parsing, and flag handling.
+1. **CLI Framework:** Consider using a popular framework like `spf13/cobra` (https://cobra.dev/) or `urfave/cli` (https://cli.urfave.org/) to simplify the command structure, argument parsing, and flag handling.
 2. **Build Distribution Workflow:** Implement a CI/CD workflow (e.g., using GitHub Actions) to automate building and distributing the CLI tool across various platforms (Windows, macOS, Linux) and architectures (32-bit, 64-bit). This will streamline setup for users on different systems.

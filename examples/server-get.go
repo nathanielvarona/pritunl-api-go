@@ -28,6 +28,7 @@ func main() {
 	// Struct Output
 	for _, server := range servers {
 		fmt.Println("Server Name:", server.Name)
+		fmt.Println("Server ID:", server.ID)
 		fmt.Println("Server Status:", server.Status)
 		fmt.Println("Server Uptime:", server.Uptime)
 		fmt.Println("------")
@@ -44,6 +45,7 @@ func main() {
 	// Struct Output
 	for _, server := range servers_specifc {
 		fmt.Println("Server Name:", server.Name)
+		fmt.Println("Server ID:", server.ID)
 		fmt.Println("Server Status:", server.Status)
 		fmt.Println("Server Uptime:", server.Uptime)
 		fmt.Println("------")
