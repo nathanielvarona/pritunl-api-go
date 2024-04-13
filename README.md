@@ -92,7 +92,7 @@ func main() {
 | OrganizationCreate | Create a New Org                        | :white_check_mark: Yes |
 | OrganizationUpdate | Update an Existing Org                  | :white_check_mark: Yes |
 | OrganizationDelete | Delete an Org                           | :white_check_mark: Yes |
-| ServerGet          | Get the Information of Existing Server  | Not Yet                |
+| ServerGet          | Get the Information of Existing Server  | :white_check_mark: Yes |
 | ServerCreate       | Create a New Server                     | Not Yet                |
 | ServerUpdate       | Update an Existing Server               | Not Yet                |
 | ServerDelete       | Delete an Server                        | Not Yet                |
