@@ -19,7 +19,7 @@ func main() {
 	// Create a context for the request
 	ctx := context.Background()
 
-	// Create a OrganizationRequest object with desired data
+	// Create a ServerRequest object with desired data
 	newServer := &pritunl.ServerRequest{
 		Name:             "pritunl.server.updated",
 		DnsServers:       []string{"8.8.8.8"}, // Use only one DNS server here

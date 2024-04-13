@@ -19,7 +19,7 @@ func main() {
 	// Create a context for the request
 	ctx := context.Background()
 
-	// Create a OrganizationRequest object with desired data
+	// Create a ServerRequest object with desired data
 	newServer := &pritunl.ServerRequest{
 		Name:             "pritunl.server.new",
 		DnsServers:       []string{"8.8.8.8"}, // Use only one DNS server here
@@ -53,7 +53,7 @@ func main() {
 		Debug:            false,
 	}
 
-	// Create a New Organization
+	// Create a New Server
 	servers, err := client.ServerCreate(ctx, *newServer)
 	if err != nil {
 		log.Fatal(err)
