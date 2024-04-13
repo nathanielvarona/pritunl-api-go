@@ -19,33 +19,33 @@ func main() {
 	// Create a context for the request
 	ctx := context.Background()
 
-	// Retrieve organization
-	orgs, err := client.OrganizationGet(ctx)
+	// Retrieve server
+	servers, err := client.ServerGet(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Struct Output
-	for _, org := range orgs {
-		fmt.Println("Organization Name:", org.Name)
-		fmt.Println("Organization ID:", org.ID)
-		fmt.Println("User Count:", org.UserCount)
+	for _, server := range servers {
+		fmt.Println("Server Name:", server.Name)
+		fmt.Println("Server Status:", server.Status)
+		fmt.Println("Server Uptime:", server.Uptime)
 		fmt.Println("------")
 	}
 
 	fmt.Println("####")
 
-	// Retrieve all organizations
-	orgs_specifc, err := client.OrganizationGet(ctx, "641351fee8f281432b807a50")
+	// Retrieve all servers
+	servers_specifc, err := client.ServerGet(ctx, "641358a8e8f281432b807e62")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Struct Output
-	for _, org := range orgs_specifc {
-		fmt.Println("Organization Name:", org.Name)
-		fmt.Println("Organization ID:", org.ID)
-		fmt.Println("User Count:", org.UserCount)
+	for _, server := range servers_specifc {
+		fmt.Println("Server Name:", server.Name)
+		fmt.Println("Server Status:", server.Status)
+		fmt.Println("Server Uptime:", server.Uptime)
 		fmt.Println("------")
 	}
 

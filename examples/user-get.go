@@ -1,4 +1,3 @@
-// example/user.go
 package main
 
 import (
@@ -12,7 +11,6 @@ import (
 // Include UserResponse struct definition here or import from its file
 
 func main() {
-	/* INITIALIZATION AND FETCHING */
 	// Provide authentication credentials as needed for client creation
 	// Automaticlly sets from environment variables if present
 	client, err := pritunl.NewClient()

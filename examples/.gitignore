@@ -10,3 +10,4 @@
 !organization-update.go
 !organization-delete.go
 !key-get.go
+!server-get.go

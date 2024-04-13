@@ -1,4 +1,3 @@
-// example/user.go
 package main
 
 import (
@@ -10,7 +9,6 @@ import (
 )
 
 func main() {
-	/* INITIALIZATION */
 	// Provide authentication credentials as needed for client creation
 	// Automaticlly sets from environment variables if present
 	client, err := pritunl.NewClient()
@@ -35,7 +33,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	/* PRESENTATION */
 	if err != nil {
 		// Handle error
 		fmt.Println("Error creating user:", err)
