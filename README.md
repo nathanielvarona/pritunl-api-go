@@ -95,9 +95,9 @@ func main() {
 | OrganizationUpdate | Update an Existing Org                  | :white_check_mark: Yes |
 | OrganizationDelete | Delete an Org                           | :white_check_mark: Yes |
 | ServerGet          | Get the Information of Existing Server  | :white_check_mark: Yes |
-| ServerCreate       | Create a New Server                     | Not Yet                |
-| ServerUpdate       | Update an Existing Server               | Not Yet                |
-| ServerDelete       | Delete an Server                        | Not Yet                |
+| ServerCreate       | Create a New Server                     | :white_check_mark: Yes |
+| ServerUpdate       | Update an existing Server               | :white_check_mark: Yes |
+| ServerDelete       | Delete a Server                         | Not Yet                |
 
 ### Future Enhancements (CLI)
 

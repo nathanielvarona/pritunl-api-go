@@ -163,7 +163,7 @@ func (c *Client) ServerGet(ctx context.Context, srvId ...string) ([]ServerRespon
 	return servers, nil
 }
 
-// ServerGet retrieves a server or servers
+// ServerCreate creates a new server
 func (c *Client) ServerCreate(ctx context.Context, newServer ServerRequest) ([]ServerResponse, error) {
 	serverData, err := json.Marshal(newServer)
 	if err != nil {
@@ -173,6 +173,36 @@ func (c *Client) ServerCreate(ctx context.Context, newServer ServerRequest) ([]S
 	path := "/server"
 
 	response, err := c.AuthRequest(ctx, http.MethodPost, path, serverData)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := handleResponse(response)
+	if err != nil {
+		return nil, err
+	}
+	defer body.Close()
+
+	// Unmarshal the JSON data using the helper function
+	var servers []ServerResponse
+	if err := handleUnmarshalServers(body, &servers); err != nil {
+		return nil, err
+	}
+
+	// Return the slice of servers
+	return servers, nil
+}
+
+// ServerUpdate update an existing server
+func (c *Client) ServerUpdate(ctx context.Context, srvId string, newServer ServerRequest) ([]ServerResponse, error) {
+	serverData, err := json.Marshal(newServer)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal server data: %w", err)
+	}
+
+	path := fmt.Sprintf("/server/%s", srvId)
+
+	response, err := c.AuthRequest(ctx, http.MethodPut, path, serverData)
 	if err != nil {
 		return nil, err
 	}
