@@ -122,9 +122,9 @@ func handleUnmarshalServers(body io.Reader, servers *[]ServerResponse) error {
 	// Attempt to unmarshal the entire response into a slice of ServerResponse
 	if err := json.Unmarshal(bodyBytes, servers); err != nil {
 		// If unmarshalling as a list fails, try unmarshalling as a single ServerResponse
-		var singleOrg ServerResponse
-		if unmarshalErr := json.Unmarshal(bodyBytes, &singleOrg); unmarshalErr == nil {
-			*servers = append(*servers, singleOrg) // Add the single server to the slice
+		var singleServer ServerResponse
+		if unmarshalErr := json.Unmarshal(bodyBytes, &singleServer); unmarshalErr == nil {
+			*servers = append(*servers, singleServer) // Add the single server to the slice
 		} else {
 			return fmt.Errorf("failed to unmarshal server response: %w", err) // Return original error
 		}

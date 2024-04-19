@@ -30,29 +30,33 @@ func NewClient(pritunl ...*Client) (*Client, error) {
 	var apiToken string
 	var apiSecret string
 
+	// First, try to get values from environment variables
+	baseURL = os.Getenv("PRITUNL_BASE_URL")
+	apiToken = os.Getenv("PRITUNL_API_TOKEN")
+	apiSecret = os.Getenv("PRITUNL_API_SECRET")
+
+	// If any values are still empty, try to get them from the arguments
 	if len(pritunl) > 0 && pritunl[0] != nil {
-		baseURL = pritunl[0].BaseUrl
-		apiToken = pritunl[0].ApiToken
-		apiSecret = pritunl[0].ApiSecret
-	} else {
 		if baseURL == "" {
-			baseURL = os.Getenv("PRITUNL_BASE_URL")
-			if baseURL == "" {
-				return nil, errors.New("missing Pritunl base URL")
-			}
+			baseURL = pritunl[0].BaseUrl
 		}
 		if apiToken == "" {
-			apiToken = os.Getenv("PRITUNL_API_TOKEN")
-			if apiToken == "" {
-				return nil, errors.New("missing Pritunl API token")
-			}
+			apiToken = pritunl[0].ApiToken
 		}
 		if apiSecret == "" {
-			apiSecret = os.Getenv("PRITUNL_API_SECRET")
-			if apiSecret == "" {
-				return nil, errors.New("missing Pritunl API secret")
-			}
+			apiSecret = pritunl[0].ApiSecret
 		}
+	}
+
+	// If any values are still empty, return an error
+	if baseURL == "" {
+		return nil, errors.New("missing Pritunl Base URL")
+	}
+	if apiToken == "" {
+		return nil, errors.New("missing Pritunl API Token")
+	}
+	if apiSecret == "" {
+		return nil, errors.New("missing Pritunl API Secret")
 	}
 
 	return &Client{

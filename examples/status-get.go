@@ -12,10 +12,12 @@ import (
 func main() {
 	// Provide authentication credentials as needed for client creation
 	// Automaticlly sets from environment variables if present
+	//
 	client, err := pritunl.NewClient()
 
 	// You can also initialize an instance by manually providing the arguments.
-	// client := pritunl.NewClient(&pritunl.Client{
+	//
+	// client, err := pritunl.NewClient(&pritunl.Client{
 	// 	BaseUrl:   "<PRITUNL API URL>",
 	// 	ApiToken:  "<PRITUNL API TOKEN>",
 	// 	ApiSecret: "<PRITUNL API SECRET>",
