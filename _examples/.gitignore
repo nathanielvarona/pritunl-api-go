@@ -21,3 +21,4 @@
 !serverorg-attach.go
 !serverorg-detach.go
 !serverhost-attach.go
+!serverhost-detach.go

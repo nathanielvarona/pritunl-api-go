@@ -41,16 +41,42 @@ func handleUnmarshalServerHosts(body io.Reader, serverhosts *[]ServerHostRespons
 	return nil
 }
 
-// ServerOrgAttach attach an organization to a server
+// ServerHostAttach attach a host to a server
 func (c *Client) ServerHostAttach(ctx context.Context, srvId string, hostId string, newServerHost ServerHostRequest) ([]ServerHostResponse, error) {
 	serverHostData, err := json.Marshal(newServerHost)
 	if err != nil {
-		return nil, fmt.Errorf("failed to marshal serverorg data: %w", err)
+		return nil, fmt.Errorf("failed to marshal serverhost data: %w", err)
 	}
 
 	path := fmt.Sprintf("/server/%s/host/%s", srvId, hostId)
 
 	response, err := c.AuthRequest(ctx, http.MethodPut, path, serverHostData)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := handleResponse(response)
+	if err != nil {
+		return nil, err
+	}
+	defer body.Close()
+
+	// Unmarshal the JSON data using the helper function
+	var serverhosts []ServerHostResponse
+	if err := handleUnmarshalServerHosts(body, &serverhosts); err != nil {
+		return nil, err
+	}
+
+	// Return the slice of serverhosts
+	return serverhosts, nil
+}
+
+// ServerHostDetach detach a host to a server
+func (c *Client) ServerHostDetach(ctx context.Context, srvId string, hostId string) ([]ServerHostResponse, error) {
+	var serverHostData []byte
+	path := fmt.Sprintf("/server/%s/host/%s", srvId, hostId)
+
+	response, err := c.AuthRequest(ctx, http.MethodDelete, path, serverHostData)
 	if err != nil {
 		return nil, err
 	}
