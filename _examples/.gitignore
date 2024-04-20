@@ -17,3 +17,4 @@
 !serverroute-get.go
 !serverroute-create.go
 !serverroute-update.go
+!serverroute-delete.go
