@@ -19,3 +19,4 @@
 !serverroute-update.go
 !serverroute-delete.go
 !serverorg-attach.go
+!serverorg-detach.go

@@ -67,3 +67,34 @@ func (c *Client) ServerOrgAttach(ctx context.Context, srvId string, orgId string
 	// Return the slice of serverorgs
 	return serverorgs, nil
 }
+
+// ServerOrgDetach Detach an organization to a server
+func (c *Client) ServerOrgDetach(ctx context.Context, srvId string, orgId string) ([]ServerOrgResponse, error) {
+	var serverOrgData []byte
+	// serverOrgData, err := json.Marshal(newServerOrg)
+	// if err != nil {
+	// 	return nil, fmt.Errorf("failed to marshal serverorg data: %w", err)
+	// }
+
+	path := fmt.Sprintf("/server/%s/organization/%s", srvId, orgId)
+
+	response, err := c.AuthRequest(ctx, http.MethodDelete, path, serverOrgData)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := handleResponse(response)
+	if err != nil {
+		return nil, err
+	}
+	defer body.Close()
+
+	// Unmarshal the JSON data using the helper function
+	var serverorgs []ServerOrgResponse
+	if err := handleUnmarshalServerOrgs(body, &serverorgs); err != nil {
+		return nil, err
+	}
+
+	// Return the slice of serverorgs
+	return serverorgs, nil
+}

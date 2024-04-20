@@ -105,7 +105,7 @@ func main() {
 | ServerRouteUpdate  | Update a Server Route                   | :white_check_mark: Yes |
 | ServerRouteDelete  | Remove/Delete a Server Route            | :white_check_mark: Yes |
 | ServerOrgAttach    | Attach an Organization for a Server     | :white_check_mark: Yes |
-| ServerOrgDetach    | Detach an Organization for a Server     | Not Yet                |
+| ServerOrgDetach    | Detach an Organization for a Server     | :white_check_mark: Yes |
 | ServerHostAttach   | Attach a Host for a Server              | Not Yet                |
 | ServerHostDetach   | Detach a Host for a Server              | Not Yet                |
 | HostUpdate         | Update a Host                           | Not Yet                |
