@@ -22,17 +22,11 @@ func main() {
 		network      string = os.Getenv("PRITUNL_DATA_NETWORK")
 	)
 
-	// Create a ServerRouteRequest object with desired data
-	newServerOrg := &pritunl.ServerOrgRequest{
-		Server: network,
-		ID:     organization,
-	}
-
 	// Create a context for the request
 	ctx := context.Background()
 
 	// Attach an Organization to a Server
-	serverorgs, err := client.ServerOrgAttach(ctx, network, organization, *newServerOrg)
+	serverorgs, err := client.ServerOrgDetach(ctx, network, organization)
 	if err != nil {
 		log.Fatal(err)
 	}
