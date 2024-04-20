@@ -146,3 +146,30 @@ func (c *Client) ServerRouteUpdate(ctx context.Context, srvId string, routeId st
 	// Return the slice of serverroutes
 	return serverroutes, nil
 }
+
+// ServerRouteDelete remove a server route
+func (c *Client) ServerRouteDelete(ctx context.Context, srvId string, routeId string) ([]ServerRouteResponse, error) {
+	var serverRouteData []byte
+
+	path := fmt.Sprintf("/server/%s/route/%s", srvId, routeId)
+
+	response, err := c.AuthRequest(ctx, http.MethodDelete, path, serverRouteData)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := handleResponse(response)
+	if err != nil {
+		return nil, err
+	}
+	defer body.Close()
+
+	// Unmarshal the JSON data using the helper function
+	var serverroutes []ServerRouteResponse
+	if err := handleUnmarshalServerRoutes(body, &serverroutes); err != nil {
+		return nil, err
+	}
+
+	// Return the slice of serverroutes
+	return serverroutes, nil
+}
