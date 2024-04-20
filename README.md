@@ -78,7 +78,7 @@ func main() {
 ```
 
 > [!TIP]
-> See the [examples](./examples) folder for code examples demonstrating how to use this library.
+> See the [_examples](./_examples) folder for code examples demonstrating how to use this package/library.
 
 ## Features
 
@@ -100,10 +100,10 @@ func main() {
 | ServerCreate       | Create a New Server                     | :white_check_mark: Yes |
 | ServerUpdate       | Update an existing Server               | :white_check_mark: Yes |
 | ServerDelete       | Delete a Server                         | :white_check_mark: Yes |
-| ServerRouteGet     | Get the Route for a Server              | :white_check_mark: Yes |
-| ServerRouteAdd     | Add a Route for a Server                | Not Yet                |
-| ServerRouteUpdate  | Update a Route for a Server             | Not Yet                |
-| ServerRouteRemove  | Remove a Route for a Server             | Not Yet                |
+| ServerRouteGet     | Get the Routes for a Server             | :white_check_mark: Yes |
+| ServerRouteCreate  | Create/Add a Server Route               | :white_check_mark: Yes |
+| ServerRouteUpdate  | Update a Server Route                   | Not Yet                |
+| ServerRouteRemove  | Remove a Server Route                   | Not Yet                |
 | ServerOrgAttach    | Attach an Organization for a Server     | Not Yet                |
 | ServerOrgDetach    | Detach an Organization for a Server     | Not Yet                |
 | ServerHostAttach   | Attach a Host for a Server              | Not Yet                |
