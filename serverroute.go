@@ -61,12 +61,42 @@ func handleUnmarshalServerRoutes(body io.Reader, serverroutes *[]ServerRouteResp
 	return nil
 }
 
-// ServerGet retrieves a server or servers
+// ServerRouteGet retrieves the server routes
 func (c *Client) ServerRouteGet(ctx context.Context, srvId string) ([]ServerRouteResponse, error) {
 	var serverRouteData []byte
-	path := fmt.Sprintf("/server/%s/route", srvId)
+	path := fmt.Sprintf("/server/%s/routes", srvId)
 
 	response, err := c.AuthRequest(ctx, http.MethodGet, path, serverRouteData)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := handleResponse(response)
+	if err != nil {
+		return nil, err
+	}
+	defer body.Close()
+
+	// Unmarshal the JSON data using the helper function
+	var serverroutes []ServerRouteResponse
+	if err := handleUnmarshalServerRoutes(body, &serverroutes); err != nil {
+		return nil, err
+	}
+
+	// Return the slice of serverroutes
+	return serverroutes, nil
+}
+
+// ServerRouteCreate add a route to a network
+func (c *Client) ServerRouteCreate(ctx context.Context, srvId string, newServerRoute ServerRouteRequest) ([]ServerRouteResponse, error) {
+	serverRouteData, err := json.Marshal(newServerRoute)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal serverroute data: %w", err)
+	}
+
+	path := fmt.Sprintf("/server/%s/route", srvId)
+
+	response, err := c.AuthRequest(ctx, http.MethodPost, path, serverRouteData)
 	if err != nil {
 		return nil, err
 	}

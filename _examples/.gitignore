@@ -15,3 +15,4 @@
 !server-update.go
 !server-delete.go
 !serverroute-get.go
+!serverroute-create.go
