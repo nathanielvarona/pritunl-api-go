@@ -10,7 +10,7 @@ Pritunl API Client for Go
 Load your Pritunl API Credentials in our Environment Variables.
 
 ```bash
-export PRITUNL_BASE_URL="https://vpn.domain.tld/"
+export PRITUNL_BASE_URL="https://vpn.domain.tld"
 export PRITUNL_API_TOKEN="<PRITUNL API TOKEN>"
 export PRITUNL_API_SECRET="<PRITUNL API SECRET>"
 ```
@@ -42,7 +42,7 @@ func main() {
 	// You can also initialize an instance by manually providing the arguments.
 	//
 	// client, err := pritunl.NewClient(&pritunl.Client{
-	// 	BaseUrl:   "<PRITUNL API URL>",
+	// 	BaseUrl:   "<PRITUNL BASE URL>",
 	// 	ApiToken:  "<PRITUNL API TOKEN>",
 	// 	ApiSecret: "<PRITUNL API SECRET>",
 	// })
@@ -100,6 +100,7 @@ func main() {
 | ServerCreate       | Create a New Server                     | :white_check_mark: Yes |
 | ServerUpdate       | Update an existing Server               | :white_check_mark: Yes |
 | ServerDelete       | Delete a Server                         | :white_check_mark: Yes |
+| ServerRouteGet     | Get the Route for a Server              | :white_check_mark: Yes |
 | ServerRouteAdd     | Add a Route for a Server                | Not Yet                |
 | ServerRouteUpdate  | Update a Route for a Server             | Not Yet                |
 | ServerRouteRemove  | Remove a Route for a Server             | Not Yet                |
