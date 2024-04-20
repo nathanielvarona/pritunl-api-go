@@ -107,7 +107,7 @@ func main() {
 | ServerOrgAttach    | Attach an Organization for a Server     | :white_check_mark: Yes |
 | ServerOrgDetach    | Detach an Organization for a Server     | :white_check_mark: Yes |
 | ServerHostAttach   | Attach a Host for a Server              | :white_check_mark: Yes |
-| ServerHostDetach   | Detach a Host for a Server              | Not Yet                |
+| ServerHostDetach   | Detach a Host for a Server              | :white_check_mark: Yes |
 | HostUpdate         | Update a Host                           | Not Yet                |
 | HostDelete         | Delete a Host                           | Not Yet                |
 

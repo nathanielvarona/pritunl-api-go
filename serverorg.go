@@ -71,10 +71,6 @@ func (c *Client) ServerOrgAttach(ctx context.Context, srvId string, orgId string
 // ServerOrgDetach Detach an organization to a server
 func (c *Client) ServerOrgDetach(ctx context.Context, srvId string, orgId string) ([]ServerOrgResponse, error) {
 	var serverOrgData []byte
-	// serverOrgData, err := json.Marshal(newServerOrg)
-	// if err != nil {
-	// 	return nil, fmt.Errorf("failed to marshal serverorg data: %w", err)
-	// }
 
 	path := fmt.Sprintf("/server/%s/organization/%s", srvId, orgId)
 
