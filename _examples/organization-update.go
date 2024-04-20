@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/nathanielvarona/pritunl-api-go"
 )
@@ -16,6 +17,10 @@ func main() {
 		log.Fatal(err)
 	}
 
+	var (
+		organization string = os.Getenv("PRITUNL_DATA_ORG")
+	)
+
 	// Create an OrganizationRequest object with desired data
 	newOrganization := &pritunl.OrganizationRequest{
 		Name: "pritunl.orgnaization.updated",
@@ -25,7 +30,7 @@ func main() {
 	ctx := context.Background()
 
 	// Update an Existing Organization
-	orgs, err := client.OrganizationUpdate(ctx, "65290fdcec07ec9111bd741e", *newOrganization)
+	orgs, err := client.OrganizationUpdate(ctx, organization, *newOrganization)
 	if err != nil {
 		log.Fatal(err)
 	}

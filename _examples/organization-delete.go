@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/nathanielvarona/pritunl-api-go"
 )
@@ -16,11 +17,15 @@ func main() {
 		log.Fatal(err)
 	}
 
+	var (
+		organization string = os.Getenv("PRITUNL_DATA_ORG")
+	)
+
 	// Create a context for the request
 	ctx := context.Background()
 
 	// Update an Existing Organization
-	orgs, err := client.OrganizationDelete(ctx, "65290fdcec07ec9111bd741e")
+	orgs, err := client.OrganizationDelete(ctx, organization)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/nathanielvarona/pritunl-api-go"
 )
@@ -16,11 +17,16 @@ func main() {
 		log.Fatal(err)
 	}
 
+	var (
+		organization string = os.Getenv("PRITUNL_DATA_ORG")
+		user         string = os.Getenv("PRITUNL_DATA_USER")
+	)
+
 	// Create a context for the request
 	ctx := context.Background()
 
-	// Call UserUpdate to update existing user for organization `641351fee8f281432b807a50`
-	users, err := client.UserDelete(ctx, "641351fee8f281432b807a50", "6618b08ea7013fe771cae514")
+	// UserUpdate update existing user for organization
+	users, err := client.UserDelete(ctx, organization, user)
 	if err != nil {
 		log.Fatal(err)
 	}

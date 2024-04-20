@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/nathanielvarona/pritunl-api-go"
 )
@@ -15,6 +16,10 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	var (
+		server string = os.Getenv("PRITUNL_DATA_SERVER")
+	)
 
 	// Create a context for the request
 	ctx := context.Background()
@@ -54,7 +59,7 @@ func main() {
 	}
 
 	// Create a New Organization
-	servers, err := client.ServerUpdate(ctx, "661a331caf8440ea3c6155f8", *newServer)
+	servers, err := client.ServerUpdate(ctx, server, *newServer)
 	if err != nil {
 		log.Fatal(err)
 	}

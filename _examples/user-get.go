@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/nathanielvarona/pritunl-api-go"
 )
@@ -18,11 +20,16 @@ func main() {
 		log.Fatal(err)
 	}
 
+	var (
+		organization string = os.Getenv("PRITUNL_DATA_ORG")
+		user         string = os.Getenv("PRITUNL_DATA_USER")
+	)
+
 	// Create a context for the request
 	ctx := context.Background()
 
-	// Retrieve specific user "644b2ba8cc3f875be1b7658d" under the organization "64131e880654550010d30c54"
-	user_org1, err := client.UserGet(ctx, "64131e880654550010d30c54", "644b2ba8cc3f875be1b7658d") // Only provide organization ID and desired user ID
+	// UserGet retrieve specific user under the organization
+	user_org1, err := client.UserGet(ctx, organization, user) // Only provide organization ID and desired user ID
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -37,8 +44,8 @@ func main() {
 
 	fmt.Println("####")
 
-	// Retrieve all users for organization "641351fee8f281432b807a50"
-	users_org2, err := client.UserGet(ctx, "641351fee8f281432b807a50")
+	// UserGet retreive all users under the organization
+	users_org2, err := client.UserGet(ctx, organization)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -52,11 +59,10 @@ func main() {
 	}
 
 	// JSON Output
-	// userBytes, err := json.MarshalIndent(users_org2, "", "  ")
-	// if err != nil {
-	// 	log.Println("Error marshalling user:", err)
-	// } else {
-	// 	fmt.Println(string(userBytes))
-	// }
-
+	userBytes, err := json.MarshalIndent(users_org2, "", "  ")
+	if err != nil {
+		log.Println("Error marshalling user:", err)
+	} else {
+		fmt.Println(string(userBytes))
+	}
 }

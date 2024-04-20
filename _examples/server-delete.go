@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/nathanielvarona/pritunl-api-go"
 )
@@ -16,11 +17,15 @@ func main() {
 		log.Fatal(err)
 	}
 
+	var (
+		server string = os.Getenv("PRITUNL_DATA_SERVER")
+	)
+
 	// Create a context for the request
 	ctx := context.Background()
 
 	// Delete Existing Server
-	servers, err := client.ServerDelete(ctx, "661a331caf8440ea3c6155f8")
+	servers, err := client.ServerDelete(ctx, server)
 	if err != nil {
 		log.Fatal(err)
 	}
