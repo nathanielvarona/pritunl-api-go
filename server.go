@@ -223,7 +223,7 @@ func (c *Client) ServerUpdate(ctx context.Context, srvId string, newServer Serve
 	return servers, nil
 }
 
-// ServerUpdate update an existing server
+// ServerDelete delete an existing server
 func (c *Client) ServerDelete(ctx context.Context, srvId string) ([]ServerResponse, error) {
 	var serverData []byte
 
