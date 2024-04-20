@@ -116,3 +116,33 @@ func (c *Client) ServerRouteCreate(ctx context.Context, srvId string, newServerR
 	// Return the slice of serverroutes
 	return serverroutes, nil
 }
+
+// ServerRouteUpdate update a server route
+func (c *Client) ServerRouteUpdate(ctx context.Context, srvId string, routeId string, newServerRoute ServerRouteRequest) ([]ServerRouteResponse, error) {
+	serverRouteData, err := json.Marshal(newServerRoute)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal serverroute data: %w", err)
+	}
+
+	path := fmt.Sprintf("/server/%s/route/%s", srvId, routeId)
+
+	response, err := c.AuthRequest(ctx, http.MethodPut, path, serverRouteData)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := handleResponse(response)
+	if err != nil {
+		return nil, err
+	}
+	defer body.Close()
+
+	// Unmarshal the JSON data using the helper function
+	var serverroutes []ServerRouteResponse
+	if err := handleUnmarshalServerRoutes(body, &serverroutes); err != nil {
+		return nil, err
+	}
+
+	// Return the slice of serverroutes
+	return serverroutes, nil
+}
