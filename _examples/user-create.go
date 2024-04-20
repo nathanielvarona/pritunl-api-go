@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/nathanielvarona/pritunl-api-go"
 )
@@ -16,6 +17,10 @@ func main() {
 		log.Fatal(err)
 	}
 
+	var (
+		organization string = os.Getenv("PRITUNL_DATA_ORG")
+	)
+
 	// Create a context for the request
 	ctx := context.Background()
 
@@ -27,8 +32,8 @@ func main() {
 		Disabled: false, // Or true if you want the user to be disabled
 	}
 
-	// Call UserCreate to create the user for organization `641351fee8f281432b807a50`
-	users, err := client.UserCreate(ctx, "641351fee8f281432b807a50", *newUser)
+	// UserCreate create a user for organization
+	users, err := client.UserCreate(ctx, organization, *newUser)
 	if err != nil {
 		log.Fatal(err)
 	}

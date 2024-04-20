@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/nathanielvarona/pritunl-api-go"
 )
@@ -16,6 +17,11 @@ func main() {
 		log.Fatal(err)
 	}
 
+	var (
+		organization string = os.Getenv("PRITUNL_DATA_ORG")
+		user         string = os.Getenv("PRITUNL_DATA_USER")
+	)
+
 	// Create a context for the request
 	ctx := context.Background()
 
@@ -27,8 +33,8 @@ func main() {
 		Disabled: false, // Or true if you want the user to be disabled
 	}
 
-	// Call UserUpdate to update existing user for organization `641351fee8f281432b807a50`
-	users, err := client.UserUpdate(ctx, "641351fee8f281432b807a50", "6618b060a7013fe771cae4ef", *updateUser)
+	// UserUpdate update existing user for organization
+	users, err := client.UserUpdate(ctx, organization, user, *updateUser)
 	if err != nil {
 		log.Fatal(err)
 	}

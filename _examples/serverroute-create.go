@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/nathanielvarona/pritunl-api-go"
 )
@@ -15,6 +16,10 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	var (
+		server string = os.Getenv("PRITUNL_DATA_SERVER")
+	)
 
 	// Create a ServerRouteRequest object with desired data
 	newServerRoute := &pritunl.ServerRouteRequest{
@@ -29,7 +34,7 @@ func main() {
 	ctx := context.Background()
 
 	// Add a Server Route
-	serverroutes, err := client.ServerRouteCreate(ctx, "6621cfb1af8440ea3c661091", *newServerRoute)
+	serverroutes, err := client.ServerRouteCreate(ctx, server, *newServerRoute)
 	if err != nil {
 		log.Fatal(err)
 	}

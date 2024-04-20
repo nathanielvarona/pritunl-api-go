@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/nathanielvarona/pritunl-api-go"
 )
@@ -16,11 +17,16 @@ func main() {
 		log.Fatal(err)
 	}
 
+	var (
+		org  string = os.Getenv("PRITUNL_DATA_ORG")
+		user string = os.Getenv("PRITUNL_DATA_USER")
+	)
+
 	// Create a context for the request
 	ctx := context.Background()
 
 	// Genreate or Retrieve Key
-	keys, err := client.KeyGet(ctx, "641351fee8f281432b807a50", "641351ffe8f281432b807a6e")
+	keys, err := client.KeyGet(ctx, org, user)
 	if err != nil {
 		log.Fatal(err)
 	}

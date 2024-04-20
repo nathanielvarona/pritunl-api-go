@@ -19,14 +19,14 @@ func main() {
 
 	var (
 		organization string = os.Getenv("PRITUNL_DATA_ORGANIZATION")
-		network      string = os.Getenv("PRITUNL_DATA_NETWORK")
+		server       string = os.Getenv("PRITUNL_DATA_SERVER")
 	)
 
 	// Create a context for the request
 	ctx := context.Background()
 
 	// Attach an Organization to a Server
-	serverorgs, err := client.ServerOrgDetach(ctx, network, organization)
+	serverorgs, err := client.ServerOrgDetach(ctx, server, organization)
 	if err != nil {
 		log.Fatal(err)
 	}

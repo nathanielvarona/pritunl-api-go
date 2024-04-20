@@ -1,13 +1,10 @@
 # pritunl-api-go
 
-Pritunl API Client for Go
-
-> [!NOTE]
-> The project is currently in development, so some features may be limited or unavailable at this time.
+[Pritunl](https://pritunl.com/) API Client for [Go](https://go.dev/)
 
 ## API Usage
 
-Load your Pritunl API Credentials in our Environment Variables.
+Load the Pritunl API Credentials as Environment Variables.
 
 ```bash
 export PRITUNL_BASE_URL="https://vpn.domain.tld"
@@ -15,11 +12,13 @@ export PRITUNL_API_TOKEN="<PRITUNL API TOKEN>"
 export PRITUNL_API_SECRET="<PRITUNL API SECRET>"
 ```
 
-Get the Pritunl API Client for Go Package/Library
+Get the Pritunl API Client for Go Package.
 
 ```bash
 go get github.com/nathanielvarona/pritunl-api-go
 ```
+
+Initializing an API Instance and Calling of Available Feature Functions.
 
 ```go
 package main
@@ -108,12 +107,10 @@ func main() {
 | ServerOrgDetach    | Detach an Organization for a Server     | :white_check_mark: Yes |
 | ServerHostAttach   | Attach a Host for a Server              | :white_check_mark: Yes |
 | ServerHostDetach   | Detach a Host for a Server              | :white_check_mark: Yes |
-| HostUpdate         | Update a Host                           | Not Yet                |
-| HostDelete         | Delete a Host                           | Not Yet                |
 
 ### Future Enhancements (CLI)
 
-1. **CLI Framework:** Consider using a popular framework like `spf13/cobra` (https://cobra.dev/) or `urfave/cli` (https://cli.urfave.org/) to simplify the command structure, argument parsing, and flag handling.
+1. **CLI Framework:** Consider using a popular framework like `spf13/cobra` (https://cobra.dev/), `urfave/cli` (https://cli.urfave.org/) or `alecthomas/kong` (https://github.com/alecthomas/kong) to simplify the command structure, argument parsing, and flag handling.
 2. **Build Distribution Workflow:** Implement a CI/CD workflow (e.g., using GitHub Actions) to automate building and distributing the CLI tool across various platforms (Windows, macOS, Linux) and architectures (32-bit, 64-bit). This will streamline setup for users on different systems.
 
 ## Alternative API Clients from different languages

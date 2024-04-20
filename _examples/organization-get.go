@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/nathanielvarona/pritunl-api-go"
 )
@@ -15,6 +16,10 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	var (
+		organization string = os.Getenv("PRITUNL_DATA_ORG")
+	)
 
 	// Create a context for the request
 	ctx := context.Background()
@@ -36,7 +41,7 @@ func main() {
 	fmt.Println("####")
 
 	// Retrieve all organizations
-	orgs_specifc, err := client.OrganizationGet(ctx, "641351fee8f281432b807a50")
+	orgs_specifc, err := client.OrganizationGet(ctx, organization)
 	if err != nil {
 		log.Fatal(err)
 	}

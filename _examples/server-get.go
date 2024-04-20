@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/nathanielvarona/pritunl-api-go"
 )
@@ -16,10 +17,14 @@ func main() {
 		log.Fatal(err)
 	}
 
+	var (
+		server_id string = os.Getenv("PRITUNL_DATA_SERVER")
+	)
+
 	// Create a context for the request
 	ctx := context.Background()
 
-	// Retrieve server
+	// Retrieve all Server
 	servers, err := client.ServerGet(ctx)
 	if err != nil {
 		log.Fatal(err)
@@ -36,8 +41,8 @@ func main() {
 
 	fmt.Println("####")
 
-	// Retrieve all servers
-	servers_specifc, err := client.ServerGet(ctx, "641358a8e8f281432b807e62")
+	// Retrieve a server
+	servers_specifc, err := client.ServerGet(ctx, server_id)
 	if err != nil {
 		log.Fatal(err)
 	}
