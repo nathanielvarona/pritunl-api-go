@@ -9,8 +9,7 @@ import (
 )
 
 func main() {
-	// Provide authentication credentials as needed for client creation
-	// Automaticlly sets from environment variables if present
+	// Initialize the Pritunl API client
 	client, err := pritunl.NewClient()
 	if err != nil {
 		log.Fatal(err)
@@ -53,13 +52,14 @@ func main() {
 		Debug:            false,
 	}
 
-	// Create a New Server
+	// Create a new server
 	servers, err := client.ServerCreate(ctx, *newServer)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Struct Output
+	// Print the created server details
+	fmt.Println("Created Server:")
 	for _, server := range servers {
 		fmt.Println("Server Name:", server.Name)
 		fmt.Println("Server ID:", server.ID)
@@ -67,5 +67,4 @@ func main() {
 		fmt.Println("Server Uptime:", server.Uptime)
 		fmt.Println("------")
 	}
-
 }

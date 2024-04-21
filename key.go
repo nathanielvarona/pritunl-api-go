@@ -2,12 +2,11 @@ package pritunl
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 )
 
+// KeyResponse represents a key response from the Pritunl API
 type KeyResponse struct {
 	ID        string `json:"id"`
 	KeyURL    string `json:"key_url"`
@@ -17,43 +16,30 @@ type KeyResponse struct {
 	URIURL    string `json:"uri_url"`
 }
 
-func handleUnmarshalKey(body io.Reader, keys *[]KeyResponse) error {
-	bodyBytes, err := io.ReadAll(body)
-	if err != nil {
-		return fmt.Errorf("failed to read response body: %w", err)
-	}
-	// Attempt to unmarshal the entire response into a slice of KeyResponse
-	if err := json.Unmarshal(bodyBytes, keys); err != nil {
-		// If unmarshalling as a list fails, try unmarshalling as a single KeyResponse
-		var singleOrg KeyResponse
-		if unmarshalErr := json.Unmarshal(bodyBytes, &singleOrg); unmarshalErr == nil {
-			*keys = append(*keys, singleOrg) // Add the single key to the slice
-		} else {
-			return fmt.Errorf("failed to unmarshal key response: %w", err) // Return original error
-		}
-	}
-	return nil
-}
-
 // KeyGet retrieves a key or keys on the server
 func (c *Client) KeyGet(ctx context.Context, orgId string, userId string) ([]KeyResponse, error) {
+	// Initialize an empty byte slice to store the request data
 	var data []byte
+
+	// Construct the API path using the organization ID and user ID
 	path := fmt.Sprintf("/key/%s/%s", orgId, userId)
 
+	// Send an authenticated GET request to retrieve the key(s)
 	response, err := c.AuthRequest(ctx, http.MethodGet, path, data)
 	if err != nil {
 		return nil, err
 	}
 
+	// Get the response body and handle any errors
 	body, err := handleResponse(response)
 	if err != nil {
 		return nil, err
 	}
 	defer body.Close()
 
-	// Unmarshal the JSON data using the helper function
+	// Unmarshal the JSON data into a slice of KeyResponse structs
 	var keys []KeyResponse
-	if err := handleUnmarshalKey(body, &keys); err != nil {
+	if err := handleUnmarshal(body, &keys); err != nil {
 		return nil, err
 	}
 

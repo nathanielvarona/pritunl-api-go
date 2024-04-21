@@ -10,32 +10,24 @@ import (
 )
 
 func main() {
-	// Provide authentication credentials as needed for client creation
-	// Automaticlly sets from environment variables if present
+	// Initialize the Pritunl API client
 	client, err := pritunl.NewClient()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	var (
-		organization string = os.Getenv("PRITUNL_DATA_ORG")
-	)
+	// Retrieve the organization ID from an environment variable
+	organization := os.Getenv("PRITUNL_DATA_ORG")
 
 	// Create a context for the request
 	ctx := context.Background()
 
-	// Update an Existing Organization
+	// Delete the specified organization
 	orgs, err := client.OrganizationDelete(ctx, organization)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Struct Output
-	for _, org := range orgs {
-		fmt.Println("Organization Name:", org.Name)
-		fmt.Println("Organization ID:", org.ID)
-		fmt.Println("User Count:", org.UserCount)
-		fmt.Println("------")
-	}
-
+	// Print a success message
+	fmt.Println("Organization Deleted Successfully")
 }

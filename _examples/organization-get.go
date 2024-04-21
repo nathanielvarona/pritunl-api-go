@@ -10,27 +10,26 @@ import (
 )
 
 func main() {
-	// Provide authentication credentials as needed for client creation
-	// Automaticlly sets from environment variables if present
+	// Initialize the Pritunl API client
 	client, err := pritunl.NewClient()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	var (
-		organization string = os.Getenv("PRITUNL_DATA_ORG")
-	)
+	// Retrieve the organization ID from an environment variable
+	organization := os.Getenv("PRITUNL_DATA_ORG")
 
 	// Create a context for the request
 	ctx := context.Background()
 
-	// Retrieve organization
+	// Retrieve all organizations
 	orgs, err := client.OrganizationGet(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Struct Output
+	// Print all organization details
+	fmt.Println("All Organizations:")
 	for _, org := range orgs {
 		fmt.Println("Organization Name:", org.Name)
 		fmt.Println("Organization ID:", org.ID)
@@ -40,18 +39,28 @@ func main() {
 
 	fmt.Println("####")
 
-	// Retrieve all organizations
-	orgs_specifc, err := client.OrganizationGet(ctx, organization)
+	// Retrieve the specified organization
+	orgsSpecific, err := client.OrganizationGet(ctx, organization)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Struct Output
-	for _, org := range orgs_specifc {
+	// Print the specified organization details
+	fmt.Println("Specified Organization:")
+	for _, org := range orgsSpecific {
 		fmt.Println("Organization Name:", org.Name)
 		fmt.Println("Organization ID:", org.ID)
 		fmt.Println("User Count:", org.UserCount)
 		fmt.Println("------")
 	}
 
+	fmt.Println("####")
+
+	// Print the first organization details
+	org := orgsSpecific[0]
+	fmt.Println("First Organization:")
+	fmt.Println("Organization Name:", org.Name)
+	fmt.Println("Organization ID:", org.ID)
+	fmt.Println("User Count:", org.UserCount)
+	fmt.Println("------")
 }

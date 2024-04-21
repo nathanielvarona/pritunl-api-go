@@ -10,21 +10,19 @@ import (
 )
 
 func main() {
-	// Provide authentication credentials as needed for client creation
-	// Automaticlly sets from environment variables if present
+	// Initialize the Pritunl API client
 	client, err := pritunl.NewClient()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	var (
-		organization string = os.Getenv("PRITUNL_DATA_ORG")
-	)
+	// Retrieve the organization ID from an environment variable
+	organization := os.Getenv("PRITUNL_DATA_ORG")
 
 	// Create a context for the request
 	ctx := context.Background()
 
-	// Create a new UserRequest object with desired data
+	// Create a new user request object with desired data
 	newUser := &pritunl.UserRequest{
 		Name:  "new_user",
 		Email: "newuser@domain.dev",
@@ -32,17 +30,16 @@ func main() {
 		Disabled: false, // Or true if you want the user to be disabled
 	}
 
-	// UserCreate create a user for organization
+	// Create a new user for the organization
 	users, err := client.UserCreate(ctx, organization, *newUser)
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	// Handle the result
 	if err != nil {
-		// Handle error
 		fmt.Println("Error creating user:", err)
 	} else {
 		fmt.Println("Successfully created users:", users)
 	}
-
 }
