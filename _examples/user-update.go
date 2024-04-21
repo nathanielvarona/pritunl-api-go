@@ -25,8 +25,8 @@ func main() {
 
 	// Create a new user request object with desired data
 	updateUser := &pritunl.UserRequest{
-		Name:  "new_user",
-		Email: "updateuser@domain.dev",
+		Name:  "new.user",
+		Email: "new.user.updated@domain.dev",
 		// Set Disabled to false (default behavior) or any other desired value
 		Disabled: false, // Or true if you want the user to be disabled
 	}

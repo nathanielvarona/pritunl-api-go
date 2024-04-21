@@ -21,23 +21,18 @@ type StatusResponse struct {
 	Notification  string   `json:"notification"`
 }
 
-// handleUnmarshalUsers is a helper function to unmarshal JSON data into a slice of StatusResponse
-// func handleUnmarshalStatus(body io.Reader, status *[]StatusResponse) error {
-// 	return handleUnmarshal(body, status)
-// }
-
 // StatusGet retrieves the Pritunl server status
 func (c *Client) StatusGet(ctx context.Context) ([]StatusResponse, error) {
-	// Initialize an empty byte slice to store the request data
-	var data []byte
+	// Construct the API path
+	path := "/status"
 
-	// Send an authenticated HTTP GET request to the API
-	response, err := c.AuthRequest(ctx, http.MethodGet, "/status", data)
+	// Send an authenticated GET request to retrieve the status
+	response, err := c.AuthRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	// Handle the HTTP response
+	// Get the response body and handle any errors
 	body, err := handleResponse(response)
 	if err != nil {
 		return nil, err

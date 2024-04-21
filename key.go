@@ -18,14 +18,11 @@ type KeyResponse struct {
 
 // KeyGet retrieves a key or keys on the server
 func (c *Client) KeyGet(ctx context.Context, orgId string, userId string) ([]KeyResponse, error) {
-	// Initialize an empty byte slice to store the request data
-	var data []byte
-
 	// Construct the API path using the organization ID and user ID
 	path := fmt.Sprintf("/key/%s/%s", orgId, userId)
 
 	// Send an authenticated GET request to retrieve the key(s)
-	response, err := c.AuthRequest(ctx, http.MethodGet, path, data)
+	response, err := c.AuthRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
 		return nil, err
 	}

@@ -117,7 +117,7 @@ type ServerResponse struct {
 
 // ServerGet retrieves a server or servers
 func (c *Client) ServerGet(ctx context.Context, srvId ...string) ([]ServerResponse, error) {
-	var serverData []byte
+	// Construct the API path
 	path := "/server"
 
 	// Handle optional srvId argument
@@ -126,7 +126,7 @@ func (c *Client) ServerGet(ctx context.Context, srvId ...string) ([]ServerRespon
 	}
 
 	// Send an authenticated GET request to retrieve the server(s)
-	response, err := c.AuthRequest(ctx, http.MethodGet, path, serverData)
+	response, err := c.AuthRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -155,6 +155,7 @@ func (c *Client) ServerCreate(ctx context.Context, newServer ServerRequest) ([]S
 		return nil, fmt.Errorf("failed to marshal server data: %w", err)
 	}
 
+	// Construct the API path
 	path := "/server"
 
 	// Send an authenticated POST request to create a new server
@@ -187,6 +188,7 @@ func (c *Client) ServerUpdate(ctx context.Context, srvId string, newServer Serve
 		return nil, fmt.Errorf("failed to marshal server data: %w", err)
 	}
 
+	// Construct the API path
 	path := fmt.Sprintf("/server/%s", srvId)
 
 	// Send an authenticated PUT request to update the server
@@ -213,12 +215,11 @@ func (c *Client) ServerUpdate(ctx context.Context, srvId string, newServer Serve
 
 // ServerDelete deletes an existing server
 func (c *Client) ServerDelete(ctx context.Context, srvId string) ([]ServerResponse, error) {
-	var serverData []byte
-
+	// Construct the API path
 	path := fmt.Sprintf("/server/%s", srvId)
 
 	// Send an authenticated DELETE request to delete the server
-	response, err := c.AuthRequest(ctx, http.MethodDelete, path, serverData)
+	response, err := c.AuthRequest(ctx, http.MethodDelete, path, nil)
 	if err != nil {
 		return nil, err
 	}
