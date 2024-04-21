@@ -122,5 +122,5 @@ Check the [_examples](./_examples) folder for code examples demonstrating how to
 
 ## Alternative API Clients
 * Python - [Pritunl API Client for Python](https://github.com/nathanielvarona/pritunl-api-python) by [@nathanielvarona](https://github.com/nathanielvarona)
-  - _(fork from [Pritunl API client for Python 3](https://github.com/ijat/pritunl-api-python) by [@ijat](https://github.com/ijat))_.
+  - _(fork from [Pritunl API client for Python 3](https://github.com/ijat/pritunl-api-python) by [@ijat](https://github.com/ijat))_
 * Ruby - [Pritunl API Client](https://github.com/eterry1388/pritunl_api_client) by [@eterry1388](https://github.com/eterry1388)
