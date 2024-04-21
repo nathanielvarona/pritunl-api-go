@@ -10,17 +10,15 @@ import (
 )
 
 func main() {
-	// Provide authentication credentials as needed for client creation
-	// Automaticlly sets from environment variables if present
+	// Initialize the Pritunl API client
 	client, err := pritunl.NewClient()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	var (
-		server string = os.Getenv("PRITUNL_DATA_SERVER")
-		route  string = os.Getenv("PRITUNL_DATA_ROUTE")
-	)
+	// Retrieve the server and route IDs from environment variables
+	server := os.Getenv("PRITUNL_DATA_SERVER")
+	route := os.Getenv("PRITUNL_DATA_ROUTE")
 
 	// Create a ServerRouteRequest object with desired data
 	newServerRoute := &pritunl.ServerRouteRequest{
@@ -34,16 +32,17 @@ func main() {
 	// Create a context for the request
 	ctx := context.Background()
 
-	// Update a Server Route
-	serverroutes, err := client.ServerRouteUpdate(ctx, server, route, *newServerRoute)
+	// Update the specified server route
+	serverRoutes, err := client.ServerRouteUpdate(ctx, server, route, *newServerRoute)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Struct Output
-	for _, serverroute := range serverroutes {
-		fmt.Println("Server Route ID:", serverroute.ID)
-		fmt.Println("Server Route Network", serverroute.Network)
+	// Print the updated server route details
+	fmt.Println("Updated Server Route:")
+	for _, serverRoute := range serverRoutes {
+		fmt.Println("Server Route ID:", serverRoute.ID)
+		fmt.Println("Server Route Network:", serverRoute.Network)
 		fmt.Println("------")
 	}
 }

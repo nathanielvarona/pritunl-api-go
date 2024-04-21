@@ -11,35 +11,21 @@ import (
 type OrganizationRequest struct {
 	Name       string `json:"name"`
 	AuthApi    bool   `json:"auth_api"`
-	AuthToken  bool   `json:"auth_token"`
-	AuthSecret bool   `json:"auth_secret"`
+	AuthToken  bool   `json:"auth_token"`  // Addition for Put Method
+	AuthSecret bool   `json:"auth_secret"` // Addition for Put Method
 }
 
 type OrganizationResponse struct {
-	ID         string  `json:"id"`
-	Name       string  `json:"name"`
-	AuthAPI    bool    `json:"auth_api"`
-	AuthToken  *string `json:"auth_token"`  // Using a pointer for optional field
-	AuthSecret *string `json:"auth_secret"` // Using a pointer for optional field
-	UserCount  int     `json:"user_count"`
+	ID         string `json:"id"`
+	Name       string `json:"name"`
+	AuthApi    bool   `json:"auth_api"`
+	AuthToken  bool   `json:"auth_token"`
+	AuthSecret bool   `json:"auth_secret"`
+	UserCount  int    `json:"user_count"`
 }
 
 func handleUnmarshalOrganizations(body io.Reader, organizations *[]OrganizationResponse) error {
-	bodyBytes, err := io.ReadAll(body)
-	if err != nil {
-		return fmt.Errorf("failed to read response body: %w", err)
-	}
-	// Attempt to unmarshal the entire response into a slice of OrganizationResponse
-	if err := json.Unmarshal(bodyBytes, organizations); err != nil {
-		// If unmarshalling as a list fails, try unmarshalling as a single OrganizationResponse
-		var singleOrg OrganizationResponse
-		if unmarshalErr := json.Unmarshal(bodyBytes, &singleOrg); unmarshalErr == nil {
-			*organizations = append(*organizations, singleOrg) // Add the single organization to the slice
-		} else {
-			return fmt.Errorf("failed to unmarshal organization response: %w", err) // Return original error
-		}
-	}
-	return nil
+	return handleUnmarshal(body, organizations)
 }
 
 // OrganizationGet retrieves a organization or organizations on the server

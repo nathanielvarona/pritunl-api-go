@@ -10,27 +10,26 @@ import (
 )
 
 func main() {
-	// Provide authentication credentials as needed for client creation
-	// Automaticlly sets from environment variables if present
+	// Initialize the Pritunl API client
 	client, err := pritunl.NewClient()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	var (
-		server_id string = os.Getenv("PRITUNL_DATA_SERVER")
-	)
+	// Retrieve the server ID from an environment variable
+	server := os.Getenv("PRITUNL_DATA_SERVER")
 
 	// Create a context for the request
 	ctx := context.Background()
 
-	// Retrieve all Server
+	// Retrieve all servers
 	servers, err := client.ServerGet(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Struct Output
+	// Print all server details
+	fmt.Println("All Servers:")
 	for _, server := range servers {
 		fmt.Println("Server Name:", server.Name)
 		fmt.Println("Server ID:", server.ID)
@@ -41,19 +40,19 @@ func main() {
 
 	fmt.Println("####")
 
-	// Retrieve a server
-	servers_specifc, err := client.ServerGet(ctx, server_id)
+	// Retrieve the specified server
+	serversSpecific, err := client.ServerGet(ctx, server)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Struct Output
-	for _, server := range servers_specifc {
+	// Print the specified server details
+	fmt.Println("Specified Server:")
+	for _, server := range serversSpecific {
 		fmt.Println("Server Name:", server.Name)
 		fmt.Println("Server ID:", server.ID)
 		fmt.Println("Server Status:", server.Status)
 		fmt.Println("Server Uptime:", server.Uptime)
 		fmt.Println("------")
 	}
-
 }

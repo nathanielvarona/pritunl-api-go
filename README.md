@@ -1,10 +1,14 @@
 # pritunl-api-go
 
-[Pritunl](https://pritunl.com/) API Client for [Go](https://go.dev/)
+Pritunl API Client for Go
 
-## API Usage
+A [Go](https://go.dev/) client for the Pritunl API, allowing you to interact with [Pritunl](https://pritunl.com/) servers and perform various actions.
 
-Load the Pritunl API Credentials as Environment Variables.
+## Getting Started
+
+### Environment Variables
+
+Load your Pritunl API credentials as environment variables:
 
 ```bash
 export PRITUNL_BASE_URL="https://vpn.domain.tld"
@@ -12,13 +16,17 @@ export PRITUNL_API_TOKEN="<PRITUNL API TOKEN>"
 export PRITUNL_API_SECRET="<PRITUNL API SECRET>"
 ```
 
-Get the Pritunl API Client for Go Package.
+### Installation
+
+Get the Pritunl API Client for Go package/library:
 
 ```bash
 go get github.com/nathanielvarona/pritunl-api-go
 ```
 
-Initializing an API Instance and Calling of Available Feature Functions.
+### Usage
+
+Initialize an API instance and call available feature functions:
 
 ```go
 package main
@@ -76,8 +84,8 @@ func main() {
 }
 ```
 
-> [!TIP]
-> See the [_examples](./_examples) folder for code examples demonstrating how to use this package/library.
+### Examples
+Check the [_examples](./_examples) folder for code examples demonstrating how to use this package/library.
 
 ## Features
 
@@ -113,6 +121,7 @@ func main() {
 1. **CLI Framework:** Consider using a popular framework like `spf13/cobra` (https://cobra.dev/), `urfave/cli` (https://cli.urfave.org/) or `alecthomas/kong` (https://github.com/alecthomas/kong) to simplify the command structure, argument parsing, and flag handling.
 2. **Build Distribution Workflow:** Implement a CI/CD workflow (e.g., using GitHub Actions) to automate building and distributing the CLI tool across various platforms (Windows, macOS, Linux) and architectures (32-bit, 64-bit). This will streamline setup for users on different systems.
 
-## Alternative API Clients from different languages
-* Python - [Pritunl API Client for Python](https://github.com/nathanielvarona/pritunl-api-python) @nathanielvarona _(fork from [Pritunl API client for Python 3](https://github.com/ijat/pritunl-api-python) @ijat)_.
-* Ruby - [Pritunl API Client](https://github.com/eterry1388/pritunl_api_client) @eterry1388
+## Alternative API Clients
+* Python - [Pritunl API Client for Python](https://github.com/nathanielvarona/pritunl-api-python) by [@nathanielvarona](https://github.com/nathanielvarona)
+  - _(fork from [Pritunl API client for Python 3](https://github.com/ijat/pritunl-api-python) by [@ijat](https://github.com/ijat))_.
+* Ruby - [Pritunl API Client](https://github.com/eterry1388/pritunl_api_client) by [@eterry1388](https://github.com/eterry1388)

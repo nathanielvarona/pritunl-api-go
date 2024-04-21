@@ -2,14 +2,11 @@ package pritunl
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
-	"io"
 	"net/http"
 )
 
-// Status represents the structure of Pritunl's status response
-type Status struct {
+// StatusResponse represents the structure of Pritunl's status response
+type StatusResponse struct {
 	OrgCount      int      `json:"org_count"`
 	UsersOnline   int      `json:"users_online"`
 	UserCount     int      `json:"user_count"`
@@ -24,34 +21,35 @@ type Status struct {
 	Notification  string   `json:"notification"`
 }
 
+// handleUnmarshalUsers is a helper function to unmarshal JSON data into a slice of StatusResponse
+// func handleUnmarshalStatus(body io.Reader, status *[]StatusResponse) error {
+// 	return handleUnmarshal(body, status)
+// }
+
 // StatusGet retrieves the Pritunl server status
-func (c *Client) StatusGet(ctx context.Context) ([]Status, error) {
+func (c *Client) StatusGet(ctx context.Context) ([]StatusResponse, error) {
+	// Initialize an empty byte slice to store the request data
 	var data []byte
 
+	// Send an authenticated HTTP GET request to the API
 	response, err := c.AuthRequest(ctx, http.MethodGet, "/status", data)
 	if err != nil {
 		return nil, err
 	}
 
-	defer response.Body.Close()
-
-	// Read entire body into a byte slice
-	bodyBytes, err := io.ReadAll(response.Body)
+	// Handle the HTTP response
+	body, err := handleResponse(response)
 	if err != nil {
 		return nil, err
 	}
+	defer body.Close() // Close the response body when done
 
-	// Decode the read bytes
-	var status []Status
-	if err := json.Unmarshal(bodyBytes, &status); err != nil {
-		// Check for single user response (may not be wrapped in an array)
-		var singleStatus Status
-		if unmarshalErr := json.Unmarshal(bodyBytes, &singleStatus); unmarshalErr == nil {
-			status = append(status, singleStatus)
-		} else {
-			return nil, fmt.Errorf("failed to decode status response: %w", err)
-		}
+	// Unmarshal the JSON data into a slice of StatusResponse
+	var status []StatusResponse
+	if err := handleUnmarshal(body, &status); err != nil {
+		return nil, err
 	}
 
+	// Return the slice of status
 	return status, nil
 }

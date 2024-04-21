@@ -10,31 +10,30 @@ import (
 )
 
 func main() {
-	// Provide authentication credentials as needed for client creation
-	// Automaticlly sets from environment variables if present
+	// Initialize the Pritunl API client
 	client, err := pritunl.NewClient()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	var (
-		org  string = os.Getenv("PRITUNL_DATA_ORG")
-		user string = os.Getenv("PRITUNL_DATA_USER")
-	)
+	// Retrieve the organization and user IDs from environment variables
+	org := os.Getenv("PRITUNL_DATA_ORG")
+	user := os.Getenv("PRITUNL_DATA_USER")
 
 	// Create a context for the request
 	ctx := context.Background()
 
-	// Genreate or Retrieve Key
+	// Retrieve or generate a key for the specified user in the organization
 	keys, err := client.KeyGet(ctx, org, user)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Struct Output
+	// Print the key details
+	fmt.Println("Key Details:")
 	for _, key := range keys {
 		fmt.Println("Key View URL:", key.ViewURL)
-		fmt.Println("Key URI URI:", key.URIURL)
+		fmt.Println("Key URI URL:", key.URIURL)
 		fmt.Println("Key URL:", key.KeyURL)
 		fmt.Println("------")
 	}

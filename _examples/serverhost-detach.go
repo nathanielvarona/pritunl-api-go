@@ -10,31 +10,25 @@ import (
 )
 
 func main() {
-	// Provide authentication credentials as needed for client creation
-	// Automaticlly sets from environment variables if present
+	// Initialize the Pritunl API client
 	client, err := pritunl.NewClient()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	var (
-		host   string = os.Getenv("PRITUNL_DATA_HOST")
-		server string = os.Getenv("PRITUNL_DATA_SERVER")
-	)
+	// Retrieve the host and server IDs from environment variables
+	host := os.Getenv("PRITUNL_DATA_HOST")
+	server := os.Getenv("PRITUNL_DATA_SERVER")
 
 	// Create a context for the request
 	ctx := context.Background()
 
-	// Attach a Host to a Server
-	serverhosts, err := client.ServerHostDetach(ctx, server, host)
+	// Detach the specified host from the specified server
+	serverHosts, err := client.ServerHostDetach(ctx, server, host)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Struct Output
-	for _, serverhost := range serverhosts {
-		fmt.Println("Server Host ID:", serverhost.ID)
-		fmt.Println("Server Host Server", serverhost.Server)
-		fmt.Println("------")
-	}
+	// Print a success message
+	fmt.Println("Server Host Detached Successfully")
 }

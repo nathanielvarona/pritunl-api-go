@@ -4,10 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 )
 
+// UserRequest represents the structure of User Get/Post/Put request
 type UserRequest struct {
 	Name            string                   `json:"name"`
 	Email           string                   `json:"email"`
@@ -22,47 +22,51 @@ type UserRequest struct {
 	MacAddresses    []string                 `json:"mac_addresses"`
 	DnsServers      []string                 `json:"dns_servers"`
 	DnsSuffix       string                   `json:"dns_suffix"`
-	PortForwarding  []UserPortForwardingData `json:"port_forwarding"`
+	PortForwarding  []userPortForwardingData `json:"port_forwarding"`
+	SendKeyEmail    bool                     `json:"send_key_email"` // Addition for Put Method
 }
 
-type UserPortForwardingData struct {
+// UserResponse represents the structure of User response
+type UserResponse struct {
+	ID               string                   `json:"id"`
+	Organization     string                   `json:"organization"`
+	OrganizationName string                   `json:"organization_name"`
+	Name             string                   `json:"name"`
+	Email            string                   `json:"email"`
+	Groups           []string                 `json:"groups"`
+	LastActive       int64                    `json:"last_active"`
+	Pin              bool                     `json:"pin"`
+	Type             string                   `json:"type"`
+	AuthType         string                   `json:"auth_type"`
+	YubicoId         string                   `json:"yubico_id"`
+	OTPSecret        string                   `json:"otp_secret"`
+	Disabled         bool                     `json:"disabled"`
+	BypassSecondary  bool                     `json:"bypass_secondary"`
+	ClientToClient   bool                     `json:"client_to_client"`
+	MacAddresses     []string                 `json:"mac_addresses"`
+	DnsServers       []string                 `json:"dns_servers"`
+	DnsSuffix        string                   `json:"dns_suffix"`
+	PortForwarding   []userPortForwardingData `json:"port_forwarding"`
+	Devices          []interface{}            `json:"devices"`
+	Gravatar         bool                     `json:"gravatar"`
+	Audit            bool                     `json:"audit"`
+	Status           bool                     `json:"status"`
+	SSO              interface{}              `json:"sso"`
+	AuthModes        []interface{}            `json:"auth_modes"`
+	DNSMapping       interface{}              `json:"dns_mapping"`
+	NetworkLinks     []interface{}            `json:"network_links"`
+	Servers          []serverData             `json:"servers"` // Nested struct for servers
+}
+
+// Substructure of `UserRequest` and `UserResponse` structs `PortForwarding` field
+type userPortForwardingData struct {
 	Protocol string `json:"protocol"`
 	Port     string `json:"port"`
 	Dport    string `json:"dport"`
 }
 
-type UserResponse struct {
-	ID               string        `json:"id"`
-	Organization     string        `json:"organization"`
-	OrganizationName string        `json:"organization_name"`
-	Name             string        `json:"name"`
-	Email            string        `json:"email"`
-	Groups           []interface{} `json:"groups"`
-	LastActive       int64         `json:"last_active"`
-	Pin              bool          `json:"pin"`
-	Type             string        `json:"type"`
-	AuthType         string        `json:"auth_type"`
-	YubicoID         interface{}   `json:"yubico_id"`
-	OTPSecret        string        `json:"otp_secret"`
-	Disabled         bool          `json:"disabled"`
-	BypassSecondary  bool          `json:"bypass_secondary"`
-	ClientToClient   bool          `json:"client_to_client"`
-	MacAddresses     []interface{} `json:"mac_addresses"`
-	DNSServers       []interface{} `json:"dns_servers"`
-	DNSSuffix        interface{}   `json:"dns_suffix"`
-	PortForwarding   []interface{} `json:"port_forwarding"`
-	Devices          []interface{} `json:"devices"`
-	Gravatar         bool          `json:"gravatar"`
-	Audit            bool          `json:"audit"`
-	Status           bool          `json:"status"`
-	SSO              interface{}   `json:"sso"`
-	AuthModes        []interface{} `json:"auth_modes"`
-	DNSMapping       interface{}   `json:"dns_mapping"`
-	NetworkLinks     []interface{} `json:"network_links"`
-	Servers          []Server      `json:"servers"` // Nested struct for servers
-}
-
-type Server struct {
+// Substructure of `UserResponse` struct `Servers` field
+type serverData struct {
 	ID             string      `json:"id"`
 	Name           string      `json:"name"`
 	Status         bool        `json:"status"`
@@ -75,48 +79,34 @@ type Server struct {
 	ConnectedSince interface{} `json:"connected_since"`
 }
 
-func handleUnmarshalUsers(body io.Reader, users *[]UserResponse) error {
-	bodyBytes, err := io.ReadAll(body)
-	if err != nil {
-		return fmt.Errorf("failed to read response body: %w", err)
-	}
-	// Attempt to unmarshal the entire response into a slice of UserResponse
-	if err := json.Unmarshal(bodyBytes, users); err != nil {
-		// If unmarshalling as a list fails, try unmarshalling as a single UserResponse
-		var singleUser UserResponse
-		if unmarshalErr := json.Unmarshal(bodyBytes, &singleUser); unmarshalErr == nil {
-			*users = append(*users, singleUser) // Add the single user to the slice
-		} else {
-			return fmt.Errorf("failed to unmarshal user response: %w", err) // Return original error
-		}
-	}
-	return nil
-}
-
 // UserGet retrieves a user or users on the server
 func (c *Client) UserGet(ctx context.Context, orgId string, userId ...string) ([]UserResponse, error) {
-	var data []byte
-	path := fmt.Sprintf("/user/%s", orgId)
+	// Initialize an empty byte slice to store the request data
+	var userData []byte
 
-	// Handle optional userId argument
+	// Construct the API path based on the orgId and optional userId
+	path := fmt.Sprintf("/user/%s", orgId)
 	if len(userId) > 0 {
-		path = fmt.Sprintf("%s/%s", path, userId[0]) // Use the first element if userId is provided
+		// If userId is provided, append it to the path
+		path = fmt.Sprintf("%s/%s", path, userId[0])
 	}
 
-	response, err := c.AuthRequest(ctx, http.MethodGet, path, data)
+	// Send an authenticated HTTP GET request to the API
+	response, err := c.AuthRequest(ctx, http.MethodGet, path, userData)
 	if err != nil {
 		return nil, err
 	}
 
+	// Handle the HTTP response
 	body, err := handleResponse(response)
 	if err != nil {
 		return nil, err
 	}
-	defer body.Close()
+	defer body.Close() // Close the response body when done
 
-	// Unmarshal the JSON data using the helper function
+	// Unmarshal the JSON data into a slice of UserResponse
 	var users []UserResponse
-	if err := handleUnmarshalUsers(body, &users); err != nil {
+	if err := handleUnmarshal(body, &users); err != nil {
 		return nil, err
 	}
 
@@ -126,81 +116,91 @@ func (c *Client) UserGet(ctx context.Context, orgId string, userId ...string) ([
 
 // UserCreate creates a new user on the server
 func (c *Client) UserCreate(ctx context.Context, orgId string, newUser UserRequest) ([]UserResponse, error) {
+	// Marshal the UserRequest struct into JSON data
 	userData, err := json.Marshal(newUser)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal user data: %w", err)
 	}
 
+	// Construct the API path
 	path := fmt.Sprintf("/user/%s", orgId)
 
+	// Send an authenticated HTTP POST request to the API
 	response, err := c.AuthRequest(ctx, http.MethodPost, path, userData)
 	if err != nil {
 		return nil, err
 	}
 
+	// Handle the HTTP response
 	body, err := handleResponse(response)
 	if err != nil {
 		return nil, err
 	}
 	defer body.Close()
 
-	// Unmarshal the JSON data using the helper function
+	// Unmarshal the JSON data into a slice of UserResponse
 	var users []UserResponse
-	if err := handleUnmarshalUsers(body, &users); err != nil {
+	if err := handleUnmarshal(body, &users); err != nil {
 		return nil, err
 	}
 	return users, nil
-
 }
 
-// UserUpdate updates an exiting user on the server
+// UserUpdate updates an existing user on the server
 func (c *Client) UserUpdate(ctx context.Context, orgId string, userId string, updateUser UserRequest) ([]UserResponse, error) {
+	// Marshal the UserRequest struct into JSON data
 	userData, err := json.Marshal(updateUser)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal user data: %w", err)
 	}
 
+	// Construct the API path
 	path := fmt.Sprintf("/user/%s/%s", orgId, userId)
 
+	// Send an authenticated HTTP PUT request to the API
 	response, err := c.AuthRequest(ctx, http.MethodPut, path, userData)
 	if err != nil {
 		return nil, err
 	}
 
+	// Handle the HTTP response
 	body, err := handleResponse(response)
 	if err != nil {
 		return nil, err
 	}
 	defer body.Close()
 
-	// Unmarshal the JSON data using the helper function
+	// Unmarshal the JSON data into a slice of UserResponse
 	var users []UserResponse
-	if err := handleUnmarshalUsers(body, &users); err != nil {
+	if err := handleUnmarshal(body, &users); err != nil {
 		return nil, err
 	}
 	return users, nil
 }
 
-// UserDelete updates an exiting user on the server
+// UserDelete deletes an existing user on the server
 func (c *Client) UserDelete(ctx context.Context, orgId string, userId string) ([]UserResponse, error) {
 	var userData []byte
 
+	// Construct the API path
 	path := fmt.Sprintf("/user/%s/%s", orgId, userId)
 
+	// Send an authenticated HTTP DELETE request to the API
 	response, err := c.AuthRequest(ctx, http.MethodDelete, path, userData)
 	if err != nil {
 		return nil, err
 	}
 
+	// Handle the HTTP response
 	body, err := handleResponse(response)
 	if err != nil {
 		return nil, err
 	}
 	defer body.Close()
 
-	// Unmarshal the JSON data using the helper function
+	// Unmarshal the JSON data into a slice of UserResponse
 	var users []UserResponse
-	if err := handleUnmarshalUsers(body, &users); err != nil {
+	if err := handleUnmarshal(body, &users); err != nil {
 		return nil, err
 	}
 	return users, nil

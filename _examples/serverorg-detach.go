@@ -10,31 +10,25 @@ import (
 )
 
 func main() {
-	// Provide authentication credentials as needed for client creation
-	// Automaticlly sets from environment variables if present
+	// Initialize the Pritunl API client
 	client, err := pritunl.NewClient()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	var (
-		organization string = os.Getenv("PRITUNL_DATA_ORGANIZATION")
-		server       string = os.Getenv("PRITUNL_DATA_SERVER")
-	)
+	// Retrieve the organization and server IDs from environment variables
+	organization := os.Getenv("PRITUNL_DATA_ORGANIZATION")
+	server := os.Getenv("PRITUNL_DATA_SERVER")
 
 	// Create a context for the request
 	ctx := context.Background()
 
-	// Attach an Organization to a Server
-	serverorgs, err := client.ServerOrgDetach(ctx, server, organization)
+	// Detach the specified organization from the specified server
+	serverOrgs, err := client.ServerOrgDetach(ctx, server, organization)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Struct Output
-	for _, serverorg := range serverorgs {
-		fmt.Println("Server Org ID:", serverorg.ID)
-		fmt.Println("Server Org Server", serverorg.Server)
-		fmt.Println("------")
-	}
+	// Print a success message
+	fmt.Println("Server Organization Detached Successfully")
 }

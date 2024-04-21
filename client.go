@@ -30,35 +30,31 @@ func NewClient(pritunl ...*Client) (*Client, error) {
 	var apiToken string
 	var apiSecret string
 
-	// First, try to get values from environment variables
+	// Check environment variables first
 	baseURL = os.Getenv("PRITUNL_BASE_URL")
 	apiToken = os.Getenv("PRITUNL_API_TOKEN")
 	apiSecret = os.Getenv("PRITUNL_API_SECRET")
 
-	// If any values are still empty, try to get them from the arguments
+	// Then check arguments (if provided)
 	if len(pritunl) > 0 && pritunl[0] != nil {
-		if baseURL == "" {
+		// Override environment variables with arguments (optional)
+		if pritunl[0].BaseUrl != "" {
 			baseURL = pritunl[0].BaseUrl
 		}
-		if apiToken == "" {
+		if pritunl[0].ApiToken != "" {
 			apiToken = pritunl[0].ApiToken
 		}
-		if apiSecret == "" {
+		if pritunl[0].ApiSecret != "" {
 			apiSecret = pritunl[0].ApiSecret
 		}
 	}
 
-	// If any values are still empty, return an error
-	if baseURL == "" {
-		return nil, errors.New("missing Pritunl Base URL")
-	}
-	if apiToken == "" {
-		return nil, errors.New("missing Pritunl API Token")
-	}
-	if apiSecret == "" {
-		return nil, errors.New("missing Pritunl API Secret")
+	// Check for missing credentials and return error if necessary
+	if baseURL == "" || apiToken == "" || apiSecret == "" {
+		return nil, errors.New("missing Pritunl API Access configuration: Base URL, API Token, or API Secret")
 	}
 
+	// Return a new Client instance with the configured credentials
 	return &Client{
 		BaseUrl:   baseURL,
 		ApiToken:  apiToken,
@@ -68,13 +64,19 @@ func NewClient(pritunl ...*Client) (*Client, error) {
 
 // AuthRequest performs an authenticated API request
 func (c *Client) AuthRequest(ctx context.Context, method, path string, data []byte) (*http.Response, error) {
+	// Generate a timestamp and nonce for authentication
 	authTimestamp := strconv.FormatInt(time.Now().Unix(), 10)
 	authNonce := strings.ReplaceAll(uuid.New().String(), "-", "")
+
+	// Construct the authentication string
 	authString := fmt.Sprintf("%s&%s&%s&%s&%s", c.ApiToken, authTimestamp, authNonce, method, path)
+
+	// Generate the authentication signature using HMAC SHA256
 	hash := hmac.New(sha256.New, []byte(c.ApiSecret))
 	hash.Write([]byte(authString))
 	authSignature := base64.StdEncoding.EncodeToString(hash.Sum(nil))
 
+	// Set the authentication headers
 	headers := map[string]string{
 		"Auth-Token":     c.ApiToken,
 		"Auth-Timestamp": authTimestamp,
@@ -83,15 +85,18 @@ func (c *Client) AuthRequest(ctx context.Context, method, path string, data []by
 		"Content-Type":   "application/json", // Default content type
 	}
 
+	// Create a new HTTP request
 	req, err := http.NewRequestWithContext(ctx, method, c.BaseUrl+path, bytes.NewBuffer(data))
 	if err != nil {
 		return nil, err
 	}
 
+	// Set the request headers
 	for k, v := range headers {
 		req.Header.Set(k, v)
 	}
 
+	// Send the request
 	client := &http.Client{}
 	response, err := client.Do(req)
 	if err != nil {

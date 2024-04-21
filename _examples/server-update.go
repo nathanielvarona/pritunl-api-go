@@ -10,16 +10,14 @@ import (
 )
 
 func main() {
-	// Provide authentication credentials as needed for client creation
-	// Automaticlly sets from environment variables if present
+	// Initialize the Pritunl API client
 	client, err := pritunl.NewClient()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	var (
-		server string = os.Getenv("PRITUNL_DATA_SERVER")
-	)
+	// Retrieve the server ID from an environment variable
+	server := os.Getenv("PRITUNL_DATA_SERVER")
 
 	// Create a context for the request
 	ctx := context.Background()
@@ -58,13 +56,14 @@ func main() {
 		Debug:            false,
 	}
 
-	// Create a New Organization
+	// Update the specified server
 	servers, err := client.ServerUpdate(ctx, server, *newServer)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Struct Output
+	// Print the updated server details
+	fmt.Println("Updated Server:")
 	for _, server := range servers {
 		fmt.Println("Server Name:", server.Name)
 		fmt.Println("Server ID:", server.ID)

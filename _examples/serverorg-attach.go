@@ -10,37 +10,36 @@ import (
 )
 
 func main() {
-	// Provide authentication credentials as needed for client creation
-	// Automaticlly sets from environment variables if present
+	// Initialize the Pritunl API client
 	client, err := pritunl.NewClient()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	var (
-		organization string = os.Getenv("PRITUNL_DATA_ORGANIZATION")
-		server       string = os.Getenv("PRITUNL_DATA_SERVER")
-	)
+	// Retrieve the organization and server IDs from environment variables
+	organization := os.Getenv("PRITUNL_DATA_ORGANIZATION")
+	server := os.Getenv("PRITUNL_DATA_SERVER")
 
-	// Create a ServerRouteRequest object with desired data
+	// Create a ServerOrgRequest object with desired data
 	newServerOrg := &pritunl.ServerOrgRequest{
-		Server: network,
+		Server: server,
 		ID:     organization,
 	}
 
 	// Create a context for the request
 	ctx := context.Background()
 
-	// Attach an Organization to a Server
-	serverorgs, err := client.ServerOrgAttach(ctx, server, organization, *newServerOrg)
+	// Attach the specified organization to the specified server
+	serverOrgs, err := client.ServerOrgAttach(ctx, server, organization, *newServerOrg)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Struct Output
-	for _, serverorg := range serverorgs {
-		fmt.Println("Server Org ID:", serverorg.ID)
-		fmt.Println("Server Org Server", serverorg.Server)
+	// Print the attached server organization details
+	fmt.Println("Attached Server Organization:")
+	for _, serverOrg := range serverOrgs {
+		fmt.Println("Server Org ID:", serverOrg.ID)
+		fmt.Println("Server Org Server", serverOrg.Server)
 		fmt.Println("------")
 	}
 }
