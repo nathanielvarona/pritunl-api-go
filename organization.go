@@ -4,10 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 )
 
+// OrganizationRequest represents the structure of the organization request
 type OrganizationRequest struct {
 	Name       string `json:"name"`
 	AuthApi    bool   `json:"auth_api"`
@@ -15,6 +15,7 @@ type OrganizationRequest struct {
 	AuthSecret bool   `json:"auth_secret"` // Addition for Put Method
 }
 
+// OrganizationResponse represents the structure of the organization response
 type OrganizationResponse struct {
 	ID         string `json:"id"`
 	Name       string `json:"name"`
@@ -22,10 +23,6 @@ type OrganizationResponse struct {
 	AuthToken  bool   `json:"auth_token"`
 	AuthSecret bool   `json:"auth_secret"`
 	UserCount  int    `json:"user_count"`
-}
-
-func handleUnmarshalOrganizations(body io.Reader, organizations *[]OrganizationResponse) error {
-	return handleUnmarshal(body, organizations)
 }
 
 // OrganizationGet retrieves a organization or organizations on the server
@@ -38,20 +35,22 @@ func (c *Client) OrganizationGet(ctx context.Context, orgId ...string) ([]Organi
 		path = fmt.Sprintf("%s/%s", path, orgId[0]) // Use the first element if orgId is provided
 	}
 
+	// Send an authenticated HTTP GET request to the API
 	response, err := c.AuthRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
 		return nil, err
 	}
 
+	// Handle the HTTP response
 	body, err := handleResponse(response)
 	if err != nil {
 		return nil, err
 	}
 	defer body.Close()
 
-	// Unmarshal the JSON data using the helper function
+	// Unmarshal the JSON data into a slice of OrganizationResponse
 	var organizations []OrganizationResponse
-	if err := handleUnmarshalOrganizations(body, &organizations); err != nil {
+	if err := handleUnmarshal(body, &organizations); err != nil {
 		return nil, err
 	}
 
@@ -59,7 +58,7 @@ func (c *Client) OrganizationGet(ctx context.Context, orgId ...string) ([]Organi
 	return organizations, nil
 }
 
-// OrganizationCreate create a new organization on the server
+// OrganizationCreate creates a new organization on the server
 func (c *Client) OrganizationCreate(ctx context.Context, newOrganization OrganizationRequest) ([]OrganizationResponse, error) {
 	// Marshal the OrganizationRequest struct into JSON data
 	orgData, err := json.Marshal(newOrganization)
@@ -70,20 +69,22 @@ func (c *Client) OrganizationCreate(ctx context.Context, newOrganization Organiz
 	// The API path for the organization
 	path := "/organization"
 
+	// Send an authenticated HTTP POST request to the API with the organization data
 	response, err := c.AuthRequest(ctx, http.MethodPost, path, orgData)
 	if err != nil {
 		return nil, err
 	}
 
+	// Handle the HTTP response
 	body, err := handleResponse(response)
 	if err != nil {
 		return nil, err
 	}
 	defer body.Close()
 
-	// Unmarshal the JSON data using the helper function
+	// Unmarshal the JSON data into a slice of OrganizationResponse
 	var organizations []OrganizationResponse
-	if err := handleUnmarshalOrganizations(body, &organizations); err != nil {
+	if err := handleUnmarshal(body, &organizations); err != nil {
 		return nil, err
 	}
 
@@ -91,7 +92,7 @@ func (c *Client) OrganizationCreate(ctx context.Context, newOrganization Organiz
 	return organizations, nil
 }
 
-// OrganizationUpdate update an existing organization on the server
+// OrganizationUpdate updates an existing organization on the server
 func (c *Client) OrganizationUpdate(ctx context.Context, orgId string, updateOrganization OrganizationRequest) ([]OrganizationResponse, error) {
 	// Marshal the OrganizationRequest struct into JSON data
 	orgData, err := json.Marshal(updateOrganization)
@@ -102,20 +103,22 @@ func (c *Client) OrganizationUpdate(ctx context.Context, orgId string, updateOrg
 	// Construct the API path for the organization
 	path := fmt.Sprintf("/organization/%s", orgId)
 
+	// Send an authenticated HTTP PUT request to the API with the organization data
 	response, err := c.AuthRequest(ctx, http.MethodPut, path, orgData)
 	if err != nil {
 		return nil, err
 	}
 
+	// Handle the HTTP response
 	body, err := handleResponse(response)
 	if err != nil {
 		return nil, err
 	}
 	defer body.Close()
 
-	// Unmarshal the JSON data using the helper function
+	// Unmarshal the JSON data into a slice of OrganizationResponse
 	var organizations []OrganizationResponse
-	if err := handleUnmarshalOrganizations(body, &organizations); err != nil {
+	if err := handleUnmarshal(body, &organizations); err != nil {
 		return nil, err
 	}
 
@@ -123,16 +126,18 @@ func (c *Client) OrganizationUpdate(ctx context.Context, orgId string, updateOrg
 	return organizations, nil
 }
 
-// OrganizationDelete delete an existing organization on the server
+// OrganizationDelete deletes an existing organization on the server
 func (c *Client) OrganizationDelete(ctx context.Context, orgId string) ([]OrganizationResponse, error) {
 	// The API path for the organization
 	path := fmt.Sprintf("/organization/%s", orgId)
 
+	// Send an authenticated HTTP DELETE request to the API
 	response, err := c.AuthRequest(ctx, http.MethodDelete, path, nil)
 	if err != nil {
 		return nil, err
 	}
 
+	// Handle the HTTP response
 	body, err := handleResponse(response)
 	if err != nil {
 		return nil, err
@@ -141,7 +146,7 @@ func (c *Client) OrganizationDelete(ctx context.Context, orgId string) ([]Organi
 
 	// Unmarshal the JSON data using the helper function
 	var organizations []OrganizationResponse
-	if err := handleUnmarshalOrganizations(body, &organizations); err != nil {
+	if err := handleUnmarshal(body, &organizations); err != nil {
 		return nil, err
 	}
 
