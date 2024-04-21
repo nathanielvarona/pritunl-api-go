@@ -33,14 +33,10 @@ func main() {
 
 	// Update an existing user for the organization
 	users, err := client.UserUpdate(ctx, organization, user, *updateUser)
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	// Handle the result
 	if err != nil {
 		fmt.Println("Error updating user:", err)
 	} else {
-		fmt.Println("Successfully updated users:", users)
+		fmt.Println("Successfully updated user:", users)
 	}
 }

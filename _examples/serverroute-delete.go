@@ -24,7 +24,7 @@ func main() {
 	ctx := context.Background()
 
 	// Delete the specified server route
-	serverRoutes, err := client.ServerRouteDelete(ctx, server, route)
+	_, err = client.ServerRouteDelete(ctx, server, route)
 	if err != nil {
 		log.Fatal(err)
 	}

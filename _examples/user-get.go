@@ -31,15 +31,15 @@ func main() {
 	// Create a context for the request
 	ctx := context.Background()
 
-	// Retrieve a specific user under the organization
-	user_org1, err := client.UserGet(ctx, organization, user)
+	// Retrieve all users under the organization
+	orgUsers, err := client.UserGet(ctx, organization)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Print user details
-	fmt.Println("Specific User:")
-	for _, user := range user_org1 {
+	// Print all user details
+	fmt.Println("All Users:")
+	for _, user := range orgUsers {
 		fmt.Println("User Name:", user.Name)
 		fmt.Println("User ID:", user.ID)
 		fmt.Println("Organization ID:", user.Organization)
@@ -48,15 +48,15 @@ func main() {
 
 	fmt.Println("####")
 
-	// Retrieve all users under the organization
-	users_org2, err := client.UserGet(ctx, organization)
+	// Retrieve a specific user under the organization
+	orgUser, err := client.UserGet(ctx, organization, user)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Print all user details
-	fmt.Println("All Users:")
-	for _, user := range users_org2 {
+	// Print user details
+	fmt.Println("Specific User:")
+	for _, user := range orgUser {
 		fmt.Println("User Name:", user.Name)
 		fmt.Println("User ID:", user.ID)
 		fmt.Println("Organization ID:", user.Organization)
@@ -64,10 +64,11 @@ func main() {
 	}
 
 	// Marshal users to JSON
-	userBytes, err := json.MarshalIndent(users_org2, "", "  ")
+	userBytes, err := json.MarshalIndent(orgUser, "", "  ")
 	if err != nil {
 		log.Println("Error marshalling user:", err)
 	} else {
 		fmt.Println(string(userBytes))
 	}
+
 }

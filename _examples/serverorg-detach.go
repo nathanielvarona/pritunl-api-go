@@ -24,7 +24,7 @@ func main() {
 	ctx := context.Background()
 
 	// Detach the specified organization from the specified server
-	serverOrgs, err := client.ServerOrgDetach(ctx, server, organization)
+	_, err = client.ServerOrgDetach(ctx, server, organization)
 	if err != nil {
 		log.Fatal(err)
 	}
