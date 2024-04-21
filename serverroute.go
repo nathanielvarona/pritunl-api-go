@@ -46,11 +46,11 @@ type ServerRouteResponse struct {
 
 // ServerRouteGet retrieves the server routes
 func (c *Client) ServerRouteGet(ctx context.Context, srvId string) ([]ServerRouteResponse, error) {
-	var serverRouteData []byte
+	// Construct the API path using the server ID
 	path := fmt.Sprintf("/server/%s/route", srvId)
 
 	// Send an authenticated GET request to retrieve server routes
-	response, err := c.AuthRequest(ctx, http.MethodGet, path, serverRouteData)
+	response, err := c.AuthRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -73,11 +73,13 @@ func (c *Client) ServerRouteGet(ctx context.Context, srvId string) ([]ServerRout
 
 // ServerRouteCreate adds a route to a network
 func (c *Client) ServerRouteCreate(ctx context.Context, srvId string, newServerRoute ServerRouteRequest) ([]ServerRouteResponse, error) {
+	// Marshal the ServerRouteRequest struct into JSON data
 	serverRouteData, err := json.Marshal(newServerRoute)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal serverroute data: %w", err)
 	}
 
+	// Construct the API path using the server ID
 	path := fmt.Sprintf("/server/%s/route", srvId)
 
 	// Send an authenticated POST request to create a new server route
@@ -104,11 +106,13 @@ func (c *Client) ServerRouteCreate(ctx context.Context, srvId string, newServerR
 
 // ServerRouteUpdate updates a server route
 func (c *Client) ServerRouteUpdate(ctx context.Context, srvId string, routeId string, newServerRoute ServerRouteRequest) ([]ServerRouteResponse, error) {
+	// Marshal the ServerRouteRequest struct into JSON data
 	serverRouteData, err := json.Marshal(newServerRoute)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal serverroute data: %w", err)
 	}
 
+	// Construct the API path using the server ID and route ID
 	path := fmt.Sprintf("/server/%s/route/%s", srvId, routeId)
 
 	// Send an authenticated PUT request to update an existing server route
@@ -135,12 +139,11 @@ func (c *Client) ServerRouteUpdate(ctx context.Context, srvId string, routeId st
 
 // ServerRouteDelete removes a server route
 func (c *Client) ServerRouteDelete(ctx context.Context, srvId string, routeId string) ([]ServerRouteResponse, error) {
-	var serverRouteData []byte
-
+	// Construct the API path using the server ID and route ID
 	path := fmt.Sprintf("/server/%s/route/%s", srvId, routeId)
 
 	// Send an authenticated DELETE request to remove a server route
-	response, err := c.AuthRequest(ctx, http.MethodDelete, path, serverRouteData)
+	response, err := c.AuthRequest(ctx, http.MethodDelete, path, nil)
 	if err != nil {
 		return nil, err
 	}

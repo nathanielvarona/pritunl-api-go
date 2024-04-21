@@ -14,7 +14,7 @@ func main() {
 	client, err := pritunl.NewClient()
 	// Alternatively, you can initialize the client with manual arguments
 	// client, err := pritunl.NewClient(&pritunl.Client{
-	// 	BaseUrl:   "<PRITUNL API URL>",
+	// 	BaseUrl:   "<PRITUNL BASE URL>",
 	// 	ApiToken:  "<PRITUNL API TOKEN>",
 	// 	ApiSecret: "<PRITUNL API SECRET>",
 	// })

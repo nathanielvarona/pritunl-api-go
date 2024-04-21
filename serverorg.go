@@ -56,13 +56,11 @@ func (c *Client) ServerOrgAttach(ctx context.Context, srvId string, orgId string
 
 // ServerOrgDetach detaches an organization from a server
 func (c *Client) ServerOrgDetach(ctx context.Context, srvId string, orgId string) ([]ServerOrgResponse, error) {
-	var serverOrgData []byte
-
 	// Construct the API path for detaching an organization
 	path := fmt.Sprintf("/server/%s/organization/%s", srvId, orgId)
 
 	// Send an authenticated DELETE request to detach the organization
-	response, err := c.AuthRequest(ctx, http.MethodDelete, path, serverOrgData)
+	response, err := c.AuthRequest(ctx, http.MethodDelete, path, nil)
 	if err != nil {
 		return nil, err
 	}

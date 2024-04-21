@@ -81,18 +81,17 @@ type serverData struct {
 
 // UserGet retrieves a user or users on the server
 func (c *Client) UserGet(ctx context.Context, orgId string, userId ...string) ([]UserResponse, error) {
-	// Initialize an empty byte slice to store the request data
-	var userData []byte
-
 	// Construct the API path based on the orgId and optional userId
 	path := fmt.Sprintf("/user/%s", orgId)
+
+	// Handle optional userId argument
 	if len(userId) > 0 {
 		// If userId is provided, append it to the path
 		path = fmt.Sprintf("%s/%s", path, userId[0])
 	}
 
 	// Send an authenticated HTTP GET request to the API
-	response, err := c.AuthRequest(ctx, http.MethodGet, path, userData)
+	response, err := c.AuthRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +121,7 @@ func (c *Client) UserCreate(ctx context.Context, orgId string, newUser UserReque
 		return nil, fmt.Errorf("failed to marshal user data: %w", err)
 	}
 
-	// Construct the API path
+	// Construct the API path based on the orgId
 	path := fmt.Sprintf("/user/%s", orgId)
 
 	// Send an authenticated HTTP POST request to the API
@@ -143,6 +142,8 @@ func (c *Client) UserCreate(ctx context.Context, orgId string, newUser UserReque
 	if err := handleUnmarshal(body, &users); err != nil {
 		return nil, err
 	}
+
+	// Return the slice of users
 	return users, nil
 }
 
@@ -154,7 +155,7 @@ func (c *Client) UserUpdate(ctx context.Context, orgId string, userId string, up
 		return nil, fmt.Errorf("failed to marshal user data: %w", err)
 	}
 
-	// Construct the API path
+	// Construct the API path using the orgId and userId
 	path := fmt.Sprintf("/user/%s/%s", orgId, userId)
 
 	// Send an authenticated HTTP PUT request to the API
@@ -175,18 +176,18 @@ func (c *Client) UserUpdate(ctx context.Context, orgId string, userId string, up
 	if err := handleUnmarshal(body, &users); err != nil {
 		return nil, err
 	}
+
+	// Return the slice of users
 	return users, nil
 }
 
 // UserDelete deletes an existing user on the server
 func (c *Client) UserDelete(ctx context.Context, orgId string, userId string) ([]UserResponse, error) {
-	var userData []byte
-
-	// Construct the API path
+	// Construct the API path using the organization ID and user ID
 	path := fmt.Sprintf("/user/%s/%s", orgId, userId)
 
 	// Send an authenticated HTTP DELETE request to the API
-	response, err := c.AuthRequest(ctx, http.MethodDelete, path, userData)
+	response, err := c.AuthRequest(ctx, http.MethodDelete, path, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -203,5 +204,6 @@ func (c *Client) UserDelete(ctx context.Context, orgId string, userId string) ([
 	if err := handleUnmarshal(body, &users); err != nil {
 		return nil, err
 	}
+
 	return users, nil
 }

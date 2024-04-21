@@ -59,13 +59,11 @@ func (c *Client) ServerHostAttach(ctx context.Context, srvId string, hostId stri
 
 // ServerHostDetach detaches a host from a server
 func (c *Client) ServerHostDetach(ctx context.Context, srvId string, hostId string) ([]ServerHostResponse, error) {
-	var serverHostData []byte
-
 	// Construct the API path for detaching a host
 	path := fmt.Sprintf("/server/%s/host/%s", srvId, hostId)
 
 	// Send an authenticated DELETE request to detach the host
-	response, err := c.AuthRequest(ctx, http.MethodDelete, path, serverHostData)
+	response, err := c.AuthRequest(ctx, http.MethodDelete, path, nil)
 	if err != nil {
 		return nil, err
 	}
