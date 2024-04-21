@@ -23,7 +23,7 @@ func main() {
 	ctx := context.Background()
 
 	// Delete the specified organization
-	orgs, err := client.OrganizationDelete(ctx, organization)
+	_, err = client.OrganizationDelete(ctx, organization)
 	if err != nil {
 		log.Fatal(err)
 	}

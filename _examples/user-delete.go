@@ -24,7 +24,7 @@ func main() {
 	ctx := context.Background()
 
 	// Delete an existing user for the organization
-	_, err := client.UserDelete(ctx, organization, user)
+	_, err = client.UserDelete(ctx, organization, user)
 	if err != nil {
 		log.Fatal(err)
 	}

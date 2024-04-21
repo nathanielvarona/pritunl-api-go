@@ -13,15 +13,15 @@ type ServerRequest struct {
 	Network          string      `json:"network"`
 	NetworkWg        string      `json:"network_wg"`
 	NetworkMode      string      `json:"network_mode"`
-	NetworkStart     string      `json:"network_start"`
-	NetworkEnd       string      `json:"network_end"`
+	NetworkStart     *string     `json:"network_start,omitempty"`
+	NetworkEnd       *string     `json:"network_end,omitempty"`
 	RestrictRoutes   bool        `json:"restrict_routes"`
 	Wg               bool        `json:"wg"`
 	Ipv6             bool        `json:"ipv6"`
 	Ipv6Firewall     bool        `json:"ipv6_firewall"`
 	DynamicFirewall  bool        `json:"dynamic_firewall"`
 	DeviceAuth       bool        `json:"device_auth"`
-	BindAddress      string      `json:"bind_address"`
+	BindAddress      *string     `json:"bind_address,omitempty"`
 	Protocol         string      `json:"protocol"`
 	Port             int         `json:"port"`
 	PortWg           int         `json:"port_wg"`
@@ -35,9 +35,9 @@ type ServerRequest struct {
 	PingTimeout      int         `json:"ping_timeout"`
 	LinkPingInterval int         `json:"link_ping_interval"`
 	LinkPingTimeout  int         `json:"link_ping_timeout"`
-	InactiveTimeout  int         `json:"inactive_timeout"`
-	SessionTimeout   int         `json:"session_timeout"`
-	AllowedDevices   string      `json:"allowed_devices"`
+	InactiveTimeout  *int        `json:"inactive_timeout,omitempty"`
+	SessionTimeout   *int        `json:"session_timeout,omitempty"`
+	AllowedDevices   *string     `json:"allowed_devices,omitempty"`
 	MaxClients       int         `json:"max_clients"`
 	MaxDevices       int         `json:"max_devices"`
 	ReplicaCount     int         `json:"replica_count"`

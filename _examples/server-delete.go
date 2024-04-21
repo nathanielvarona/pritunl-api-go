@@ -23,7 +23,7 @@ func main() {
 	ctx := context.Background()
 
 	// Delete the specified server
-	servers, err := client.ServerDelete(ctx, server)
+	_, err = client.ServerDelete(ctx, server)
 	if err != nil {
 		log.Fatal(err)
 	}
