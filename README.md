@@ -4,6 +4,8 @@ Pritunl API Client for Go
 
 A [Go](https://go.dev/) client for the Pritunl API, allowing you to interact with [Pritunl](https://pritunl.com/) servers and perform various actions.
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nathanielvarona_pritunl-api-go&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=nathanielvarona_pritunl-api-go)
+
 ## Getting Started
 
 ### Environment Variables
