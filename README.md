@@ -119,10 +119,10 @@ Check the [_examples](./_examples) folder for code examples demonstrating how to
 
 ### Future Enhancements (CLI)
 
-1. **CLI Framework:** Consider using a popular framework like `spf13/cobra` (https://cobra.dev/), `urfave/cli` (https://cli.urfave.org/) or `alecthomas/kong` (https://github.com/alecthomas/kong) to simplify the command structure, argument parsing, and flag handling.
+1. **CLI Framework:** Consider using a popular framework like [spf13/cobra](https://github.com/spf13/cobra), [urfave/cli](https://github.com/urfave/cli), or [alecthomas/kong](https://github.com/alecthomas/kong) to simplify the command structure, argument parsing, and flag handling.
 2. **Build Distribution Workflow:** Implement a CI/CD workflow (e.g., using GitHub Actions) to automate building and distributing the CLI tool across various platforms (Windows, macOS, Linux) and architectures (32-bit, 64-bit). This will streamline setup for users on different systems.
 
 ## Alternative API Clients
 * Python - [Pritunl API Client for Python](https://github.com/nathanielvarona/pritunl-api-python) by [@nathanielvarona](https://github.com/nathanielvarona)
-  - _(fork from [Pritunl API client for Python 3](https://github.com/ijat/pritunl-api-python) by [@ijat](https://github.com/ijat))_
+  - _fork from [Pritunl API client for Python 3](https://github.com/ijat/pritunl-api-python) by [@ijat](https://github.com/ijat)_
 * Ruby - [Pritunl API Client](https://github.com/eterry1388/pritunl_api_client) by [@eterry1388](https://github.com/eterry1388)
