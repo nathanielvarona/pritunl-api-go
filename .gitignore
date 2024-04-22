@@ -20,6 +20,10 @@
 # Go workspace file
 go.work
 
+# Dev Env Ingore
 .vscode
 .envrc
 .env
+
+# sonarqube - Manage code quality
+.scannerwork
