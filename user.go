@@ -22,7 +22,7 @@ type UserRequest struct {
 	MacAddresses    []string                 `json:"mac_addresses"`
 	DnsServers      []string                 `json:"dns_servers"`
 	DnsSuffix       string                   `json:"dns_suffix"`
-	PortForwarding  []userPortForwardingData `json:"port_forwarding"`
+	PortForwarding  []UserPortForwardingData `json:"port_forwarding"`
 	SendKeyEmail    bool                     `json:"send_key_email"` // Addition for Put Method
 }
 
@@ -46,7 +46,7 @@ type UserResponse struct {
 	MacAddresses     []string                 `json:"mac_addresses"`
 	DnsServers       []string                 `json:"dns_servers"`
 	DnsSuffix        string                   `json:"dns_suffix"`
-	PortForwarding   []userPortForwardingData `json:"port_forwarding"`
+	PortForwarding   []UserPortForwardingData `json:"port_forwarding"`
 	Devices          []interface{}            `json:"devices"`
 	Gravatar         bool                     `json:"gravatar"`
 	Audit            bool                     `json:"audit"`
@@ -55,18 +55,18 @@ type UserResponse struct {
 	AuthModes        []interface{}            `json:"auth_modes"`
 	DNSMapping       interface{}              `json:"dns_mapping"`
 	NetworkLinks     []interface{}            `json:"network_links"`
-	Servers          []serverData             `json:"servers"` // Nested struct for servers
+	Servers          []ServerData             `json:"servers"` // Nested struct for servers
 }
 
-// Substructure of `UserRequest` and `UserResponse` structs `PortForwarding` field
-type userPortForwardingData struct {
+// Substructure of `UserRequest` and `UserResponse` structs for `PortForwarding` field
+type UserPortForwardingData struct {
 	Protocol string `json:"protocol"`
 	Port     string `json:"port"`
 	Dport    string `json:"dport"`
 }
 
-// Substructure of `UserResponse` struct `Servers` field
-type serverData struct {
+// Substructure of `UserResponse` struct for `Servers` field
+type ServerData struct {
 	ID             string      `json:"id"`
 	Name           string      `json:"name"`
 	Status         bool        `json:"status"`
