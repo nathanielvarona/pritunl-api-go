@@ -88,6 +88,26 @@ func main() {
 ### Examples
 Check the [_examples](./_examples) folder for code examples demonstrating how to use this package/library.
 
+## Development and Contributing Guidelines
+
+We welcome improvements to **pritunl-api-go** `github.com/nathanielvarona/pritunl-api-go`.
+
+### Fork & Pull Requests:
+
+**Here's how**
+
+* Fork the repo.
+* Clone your fork locally.
+* Create a branch named like this: `<type>/<descriptive-name>` (e.g., `feature/add-new-function`).
+  - `<type>`: Choose from `breaking`, `feature`, `improvement`, `automation`, or `documentation`.
+  - Kindly read the [.github/labels.yml](./.github/labels.yml) and [.github/pr-labeler.yml](./.github/pr-labeler.yml) for the valid type and label description.
+* Make your changes (adhere to Go conventions & include examples/tests!).
+* Commit & push your changes to your branch.
+* Create a pull request with a clear description.
+
+**We appreciate your contributions!**
+
+
 ## Features
 
 ### Core Pritunl API Client
