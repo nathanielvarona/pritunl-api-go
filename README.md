@@ -88,25 +88,30 @@ func main() {
 ### Examples
 Check the [_examples](./_examples) folder for code examples demonstrating how to use this package/library.
 
-## Development and Contributing Guidelines
+## Contributing
 
-We welcome improvements to **pritunl-api-go** `github.com/nathanielvarona/pritunl-api-go`.
+We welcome your contributions to `pritunl-api-go`. This guide outlines the process for contributing effectively.
 
-### Fork & Pull Requests:
+### Fork & Pull Requests
 
-**Here's how**
+#### Workflow:
 
-* Fork the repo.
-* Clone your fork locally.
-* Create a branch named like this: `<type>/<descriptive-name>` (e.g., `feature/add-new-function`).
-  - `<type>`: Choose from `breaking`, `feature`, `improvement`, `automation`, or `documentation`.
-  - Kindly read the [.github/labels.yml](./.github/labels.yml) and [.github/pr-labeler.yml](./.github/pr-labeler.yml) for the valid type and label description.
-* Make your changes (adhere to Go conventions & include examples/tests!).
-* Commit & push your changes to your branch.
-* Create a pull request with a clear description.
+1. **Fork the repository:** Visit the [pritunl-api-go](https://github.com/nathanielvarona/pritunl-api-go) repository on GitHub and click "`Fork`". This creates your own copy.
+2. **Clone your forked repository:** Use git clone to clone your forked copy to your local development environment.
+3. **Create a Branch:** Use a descriptive branch name following the convention `<type>/<descriptive-name>`.
+   - `<type>`: Choose from `breaking`, `feature`, `improvement`, `automation`, or `documentation`.
+   - Refer to the [.github/labels.yml](./.github/labels.yml) and [.github/pr-labeler.yml](./.github/pr-labeler.yml) file for valid `<type>` options and label descriptions. (e.g., `improvement/start-stop-a-server`)
+4. **Make your changes:** Implement your code modifications, ensuring they adhere to Go coding conventions [gofmt](https://go.dev/blog/gofmt) and consider adding ~~unit tests~~<sup>ref*</sup> for new features.
+5. **Commit your changes:** Stage and commit your changes with clear and concise commit messages.
+6. **Push your branch and Create a Pull Request:** Push your local branch to your forked repository on GitHub and create a pull request with a detailed description of your changes.
 
-**We appreciate your contributions!**
+#### Additional Tips:
 
+* <sup>ref*</sup> Include `examples` where relevant to illustrate your changes.
+* **Simplify your development workflow!** We recommend using a `Go workspace` when contributing to `pritunl-api-go`. Go workspaces provide a clean and efficient way to manage dependencies.
+   - Refer to the official guide for setting up a workspace: https://go.dev/doc/tutorial/workspaces
+
+**We appreciate your contributions to the project!**
 
 ## Features
 
