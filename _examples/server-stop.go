@@ -22,12 +22,12 @@ func main() {
 	// Create a context for the request
 	ctx := context.Background()
 
-	// Delete the specified server
-	_, err = client.ServerDelete(ctx, server)
+	// Stop the specified server
+	_, err = client.ServerStop(ctx, server)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Print a success message
-	fmt.Println("Server Deleted Successfully")
+	fmt.Println("Server Stoped Successfully")
 }
