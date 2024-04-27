@@ -22,3 +22,5 @@
 !serverorg-detach.go
 !serverhost-attach.go
 !serverhost-detach.go
+!server-start.go
+!server-stop.go
