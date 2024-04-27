@@ -27,3 +27,6 @@ go.work
 
 # sonarqube - Manage code quality
 .scannerwork
+
+# Locals
+.develop
