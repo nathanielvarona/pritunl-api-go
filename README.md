@@ -101,7 +101,7 @@ We welcome your contributions to `pritunl-api-go`. This guide outlines the proce
 3. **Create a Branch:** Use a descriptive branch name following the convention `<type>/<descriptive-name>`.
    - `<type>`: Choose from `breaking`, `feature`, `improvement`, `automation`, or `documentation`.
    - Refer to the [.github/labels.yml](./.github/labels.yml) and [.github/pr-labeler.yml](./.github/pr-labeler.yml) file for valid `<type>` options and label descriptions. (e.g., `improvement/start-stop-a-server`)
-4. **Make your changes:** Implement your code modifications, ensuring they adhere to Go coding conventions [gofmt](https://go.dev/blog/gofmt) and consider adding ~~unit tests~~<sup>ref*</sup> for new features.
+4. **Make your changes:** Implement your code modifications, ensuring they adhere to Go coding conventions [gofmt](https://go.dev/blog/gofmt) and consider adding ~~unit tests~~ <sup>ref*</sup> for new features.
 5. **Commit your changes:** Stage and commit your changes with clear and concise commit messages.
 6. **Push your branch and Create a Pull Request:** Push your local branch to your forked repository on GitHub and create a pull request with a detailed description of your changes.
 
@@ -133,6 +133,8 @@ We welcome your contributions to `pritunl-api-go`. This guide outlines the proce
 | ServerCreate       | Create a New Server                     | :white_check_mark: Yes |
 | ServerUpdate       | Update an existing Server               | :white_check_mark: Yes |
 | ServerDelete       | Delete a Server                         | :white_check_mark: Yes |
+| ServerStart        | Start an existing Server                | :white_check_mark: Yes |
+| ServerStop         | Start an existing Server                | :white_check_mark: Yes |
 | ServerRouteGet     | Get the Routes for a Server             | :white_check_mark: Yes |
 | ServerRouteCreate  | Create/Add a Server Route               | :white_check_mark: Yes |
 | ServerRouteUpdate  | Update a Server Route                   | :white_check_mark: Yes |
