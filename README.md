@@ -111,17 +111,13 @@ We welcome your contributions to pritunl-api-go. This guide outlines the process
 * **Simplify your development workflow!** We recommend using a `Go workspace` when contributing to `pritunl-api-go`. Go workspaces provide a clean and efficient way to manage dependencies.
    - Refer to the official guide for setting up a workspace: https://go.dev/doc/tutorial/workspaces
 
-#### Rebasing and Squashing Commits
-Before submitting your pull request, we recommend rebasing your branch on top of the main branch and squashing your commits. This helps maintain a clean and linear commit history.
-1. **Fetch the latest changes:** Run `git fetch origin` to fetch the latest changes from the main repository.
-2. **Rebase your branch:** Run `git rebase origin/main` to rebase your branch on top of the main branch.
-3. **Count your local commits:** Run `git log origin/main..HEAD --oneline | wc -l` to count the number of commits you've made.
-4. **Squash your commits:** Run `git rebase -i HEAD~<N>` (replace <N> with the number of commits you counted) to interactively squash your commits. This will open an editor where you can merge your commits into a single, cohesive commit.
-5. **Force-push your branch:** Run `git push -f origin <your-branch> --force`to update your forked repository with the rebased and squashed commits.
+### Rebasing and Squashing Commits
+
+Before submitting your `pull request`, we recommend cleaning up your commit history to make it easier to review. This involves `rebasing` your branch on top of the `main` branch and `combining` your commits into a `single`, `clear` commit. Additionally, please ensure that your `commit author name` and `email` are consistent with your `GitHub account`, as this will help us keep a clear record of contributions.
 
 **We appreciate your contributions to the project!**
 
-By following these guidelines, you'll help us maintain a high-quality codebase and make it easier for others to contribute. Thank you for taking the time to contribute to pritunl-api-go!
+By following these guidelines, you'll help us maintain a high-quality codebase and make it easier for others to contribute. Thank you for taking the time to contribute to `pritunl-api-go`!
 
 ## Features
 
