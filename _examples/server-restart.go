@@ -22,12 +22,12 @@ func main() {
 	// Create a context for the request
 	ctx := context.Background()
 
-	// Start the specified server
-	_, err = client.ServerStart(ctx, server)
+	// Restart the specified server
+	_, err = client.ServerRestart(ctx, server)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Print a success message
-	fmt.Println("Server Started Successfully")
+	fmt.Println("Server Restarted Successfully")
 }
