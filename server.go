@@ -293,3 +293,30 @@ func (c *Client) ServerStart(ctx context.Context, srvId string) ([]ServerRespons
 	// Return the slice of servers
 	return servers, nil
 }
+
+// ServerRestart restarts an existing server
+func (c *Client) ServerRestart(ctx context.Context, srvId string) ([]ServerResponse, error) {
+	// Construct the API path
+	path := fmt.Sprintf("/server/%s/operation/restart", srvId)
+
+	// Send an authenticated PUT request to stop the server
+	response, err := c.AuthRequest(ctx, http.MethodPut, path, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := handleResponse(response)
+	if err != nil {
+		return nil, err
+	}
+	defer body.Close()
+
+	// Unmarshal the JSON data into a slice of ServerResponse
+	var servers []ServerResponse
+	if err := handleUnmarshal(body, &servers); err != nil {
+		return nil, err
+	}
+
+	// Return the slice of servers
+	return servers, nil
+}

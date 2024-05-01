@@ -141,6 +141,7 @@ By following these guidelines, you'll help us maintain a high-quality codebase a
 | ServerDelete       | Delete a Server                         | :white_check_mark: Yes |
 | ServerStart        | Start an existing Server                | :white_check_mark: Yes |
 | ServerStop         | Start an existing Server                | :white_check_mark: Yes |
+| ServerRestart      | Restart an existing Server              | :white_check_mark: Yes |
 | ServerRouteGet     | Get the Routes for a Server             | :white_check_mark: Yes |
 | ServerRouteCreate  | Create/Add a Server Route               | :white_check_mark: Yes |
 | ServerRouteUpdate  | Update a Server Route                   | :white_check_mark: Yes |
